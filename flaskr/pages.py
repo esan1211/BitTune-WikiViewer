@@ -1,5 +1,5 @@
 from flask import render_template
-import backend.py
+from backend import *
 
 
 def make_endpoints(app):
@@ -15,19 +15,19 @@ def make_endpoints(app):
     def pages():
         return render_template("pages.html")
     @app.route("/about")
-    def about()
+    def about():
         return render_template("about.html")
     @app.route("/signup")
-    def signUpPage()
+    def signUpPage():
         return render_template("sign_up.html")
     @app.route("/login")
-    def logInPage();
+    def logInPage():
         return render_template("log_in.html")
     @app.route("/logout")
-    def logOutPage();
+    def logOutPage():
         return render_template("log_out.html")
     @app.route("/upload")
-    def uploadPage();
+    def uploadPage():
         return render_template("upload.html")
 
     @app.route("/pages/<stored>")
