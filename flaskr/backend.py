@@ -1,13 +1,17 @@
-# TODO(Project 1): Implement Backend according to the requirements.
+from google.cloud import storage
+
 class Backend:
 
     def __init__(self):
         pass
         
-    def get_wiki_page(self, name):
-        pass
+    def get_wiki_page(self, name): #Danny
+        bucket = storage.bucket("bt-wikiiewer-content")
+        blob = bucket.get_blob(name + ".txt")
+        with blob.open() as f:
+            return f
 
-    def get_all_page_names(self):
+    def get_all_page_names(self):#Danny
         pass
 
     def upload(self):
