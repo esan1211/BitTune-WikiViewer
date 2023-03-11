@@ -33,8 +33,23 @@ class Backend:
             with blob.open("w") as f:
                 f.write(hashed)
 
-    def sign_in(self): #Asis
-        pass
+    def sign_in(self, user, password): #Asis
+        bucket_name = "bt-wikiviewer-users_passwords"
+
+        storage_client = storage.Client()
+
+        bucket = storage_client.bucket(bucket_name)
+
+        blobs = storage_client.list_blobs(bucket_name)
+        for b in blobs:
+            if b == user:
+                blob = bucket.blob(user)
+                with blob.open("r") as f:
+                    hashed = f.read()
+                if hashed == hashlib.sha256(password.encode()).hexdigest():
+                    return True
+                else:
+                    return False
 
     def get_image(self):
         pass
