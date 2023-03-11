@@ -32,6 +32,8 @@ class Backend:
 
             with blob.open("w") as f:
                 f.write(hashed)
+        else:
+            return False
 
     def sign_in(self, user, password): #Asis
         bucket_name = "bt-wikiviewer-users_passwords"
