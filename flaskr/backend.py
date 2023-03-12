@@ -12,20 +12,23 @@ class Backend:
         
     def get_wiki_page(self, name): #Danny
         storage_client = storage.Client()
-        bucket = storage_client.bucket("bt-wikiiewer-content")
-        blob = bucket.get_blob(name + ".txt")
+        bucket = storage_client.bucket("bt-wikiviewer-content")
+        blob = bucket.get_blob(name)
+        print("hello", blob)
         with blob.open() as f:
-            return f
+            return f.read()
 
-    def get_all_page_names(self):#Danny
+    def get_all_page_names(self): #Danny
         storage_client = storage.Client()
-        bucket = storage_client.bucket("bt-wikiiewer-content")
-        blobs = bucket.list_blobs("bt-wikiiewer-content")
+        blobs = storage_client.list_blobs("bt-wikiviewer-content")
 
         blob_name_lst = []
 
         for blob in blobs:
-            blob_name_lst.append(blob.name)
+            if(blob.name.endswith(".txt")):
+                blob_name_lst.append(blob.name)
+
+        print(blob_name_lst)
             
         return blob_name_lst
         
@@ -36,6 +39,8 @@ class Backend:
         if(file_uploaded.endswith(".txt")):
             filename = "%s%s" % ('',file_uploaded)
             blob = bucket.blob(filename)
+            basedir = os.path.abspath(os.path.dirname(file_uploaded))
+            print(file_uploaded)
             with open(file_uploaded,'rb') as f:
                 blob.upload_from_file(f)
         pass
@@ -46,7 +51,7 @@ class Backend:
         storage_client = storage.Client()
 
         blobs = storage_client.list_blobs(bucket_name)
-        if user not in blobs: 
+        if user not in blobs:
             bucket = storage_client.bucket(bucket_name)
             blob = bucket.blob(user)
 
@@ -79,13 +84,12 @@ class Backend:
         storage_client = storage.Client()
         blobs = storage_client.list_blobs("bt-wikiviewer-content")
         for blob in blobs:
-            if blob.name:
+            print(blob.name)
+            if blob.name == image:
                 print("Success")
-                return image
-            else:
-                print("Image does not exist")
-                return
+                print(blob)
+                return blob
+        print("Does not exist")
         pass
-
     
 
