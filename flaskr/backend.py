@@ -12,6 +12,18 @@ class Backend:
             return f
 
     def get_all_page_names(self):#Danny
+        bucket = storage.bucket("bt-wikiiewer-content")
+        storage_client = storage.Client()
+        blobs = storage_client.list_blobs("bt-wikiiewer-content")
+
+        blob_name_lst = []
+
+        for blob in blobs:
+            blob_name_lst.append(blob.name)
+            
+        return blob_name_lst
+        
+
         pass
 
     def upload(self):

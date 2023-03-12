@@ -1,5 +1,5 @@
 from flask import render_template
-from backend import *
+#import backend.py
 
 
 def make_endpoints(app):
@@ -30,7 +30,7 @@ def make_endpoints(app):
     def uploadPage():
         return render_template("upload.html")
 
-    @app.route("/pages/<stored>")
-    def grabUploaded(stored):
-        needPage = get_wiki_page(stored)
-        return render_template(needPage)
+    #@app.route("/pages/<stored>")
+    #def grabUploaded(stored):
+    #    needPage = get_wiki_page(stored)
+    #    return render_template(needPage)
