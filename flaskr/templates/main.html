@@ -3,26 +3,25 @@
 
 <head>
     <head>
-        <!-- TODO(Checkpoint Requirement 3): Change the title and content of your wiki.-->
-        <title>Wiki Viewer</title>
+        <title>Wiki Music Museum</title>
+        {% block navigation %}
+        
+        <a href = "/">Home</a> <a href = "/pages">Pages</a> <a href= "/about">About</a> |
+        <a href = "/login">Login</a> <a href = "/signup">Sign Up</a>
+        
+        {% endblock %}
+        <h1>Wiki Music Museum</h1>
+
+        {% block page_name%}{% endblock %}
     </head>
 </head>
 
 <body>
-    <!-- TODO(Project 1): Implement routes. -->
-    <nav>
-        <div class='topnav'>
-            <a class='active' href='#main'>Home</a>
-            <a href='#pages'>Pages</a>
-            <a href='#about'>About</a>
-            <a href='#login'>Login</a>
-            <a href='#signup'>Sign Up</a>
-        </div>
-    </nav>
+    {% block content %}
     <div>       
-        <!-- TODO(Checkpoint Requirement 3): Change the title and content of your wiki.-->
-        Hello Hello Hello Hello
+        Welcome to Bitune Music Museum
     </div>
+    {% endblock %}
 </body>
 
 </html>
