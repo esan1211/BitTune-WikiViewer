@@ -30,8 +30,6 @@ class Backend:
         return blob_name_lst
         
 
-        pass
-
     def upload(self, file_uploaded): #Enrique
         storage_client = storage.Client()
         bucket = storage_client.bucket("bt-wikiviewer-content")
@@ -40,7 +38,6 @@ class Backend:
             blob = bucket.blob(filename)
             with open(file_uploaded,'rb') as f:
                 blob.upload_from_file(f)
-                print("Uploaded")
         pass
 
     def sign_up(self, user, password): #Asis
@@ -80,14 +77,15 @@ class Backend:
 
     def get_image(self, image): #Enrique
         storage_client = storage.Client()
-        bucket = storage_client.bucket("bt-wikiviewer-content")
-        blobs = bucket.list_blobs()
+        blobs = storage_client.list_blobs("bt-wikiviewer-content")
         for blob in blobs:
-            if image in blob.name:
-                print("")
-            # process file
+            if blob.name:
+                print("Success")
+                return image
+            else:
+                print("Image does not exist")
+                return
         pass
-#backend = Backend()
-#backend.upload(r"test.txt")
+
     
 

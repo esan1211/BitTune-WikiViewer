@@ -1,6 +1,8 @@
 from flask import render_template, request, redirect, url_for, session
 from flaskr.backend import Backend
 from werkzeug.utils import secure_filename
+import base64
+import io
 import os
 
 
@@ -14,11 +16,16 @@ def make_endpoints(app):
         return render_template("main.html")
 
     # TODO(Project 1): Implement additional routes according to the project requirements.
-    @app.route("/pages")
+    @app.route("/pages") #Enrique
     def pages():
         return render_template("pages.html")
-    @app.route("/about")
+    @app.route("/about", methods = ['GET', 'POST'])
     def about():
+        if request.method == 'GET':
+            img1 = backend.get_image("asis.jpeg")
+            img2 = backend.get_image("danny.JPG")
+            img3 = backend.get_image("Enrique.png")
+            
         return render_template("about.html")
     
     @app.route("/signup", methods = ['GET', 'POST']) #Asis
@@ -68,12 +75,10 @@ def make_endpoints(app):
 
     @app.route("/upload", methods = ['GET','POST']) #Enrique
     def uploadPage():
-        print('hi')
         app.config['UPLOAD_FILE'] = "/home/enrique_munoz/project/"
         if request.method == "POST":
             
             if request.files:
-                print(request.files)
                 f = request.files["myfile"]
                 
                 if f.filename == '':
