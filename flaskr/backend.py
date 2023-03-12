@@ -47,11 +47,7 @@ class Backend:
             print(file_uploaded)
             with open(file_uploaded,'rb') as f:
                 blob.upload_from_file(f)
-<<<<<<< HEAD
         pass
-=======
-                print("Uploaded")
->>>>>>> 3e552550d84f5b29e4f7af92b9f0c832384d1b53
 
     def sign_up(self, username, password): #Asis
         hashed = hashlib.sha256(password.encode()).hexdigest()
@@ -61,14 +57,6 @@ class Backend:
         storage_client = storage.Client()
 
         blobs = storage_client.list_blobs(bucket_name)
-<<<<<<< HEAD
-        if user not in blobs:
-            bucket = storage_client.bucket(bucket_name)
-            blob = bucket.blob(user)
-
-            hashed = hashlib.sha256(password.encode()).hexdigest()
-=======
->>>>>>> 3e552550d84f5b29e4f7af92b9f0c832384d1b53
 
         for blob in blobs:
             if username == blob.name: 
@@ -77,6 +65,7 @@ class Backend:
         blob = bucket.blob(username)
         with blob.open('w') as f:
             f.write(hashed)
+        return True
 
     def sign_in(self, username, password): #Asis
         hashed = hashlib.sha256(password.encode()).hexdigest()
