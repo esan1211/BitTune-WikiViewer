@@ -1,29 +1,25 @@
-<!DOCTYPE html> 
-<html>
+{% extends "main.html" %}
 
-<head>
-    <title> Sign Up</title>
-</head>
+{% block page_name %}
+<title> Sign Up</title>
+{% endblock %}
 
-<body>
-    <div align='center'>
-        <div align='center' class='border'>
-            <div>
-                <h1> Sign Up</h1>
-            </div>
-            <h2>
-                <form action='{{ url_for('sign_up_page') }}' method = 'post'>
-                    <div class='msg'>{{ msg }}</div>
-                    <p> Username: </p>
-                    <input id='username' name='username' type='text' />
-                    <p> Password: </p>
-                    <input id='password' name='password' type='text' /><br>
-                    <input type='submit' value='Sign Up'>
-                </form>
-            </h2>
+{% block content %}
+<div align='center'>
+    <div align='center' class='border'>
+        <div>
+            <h1> Sign Up</h1>
         </div>
+        <h2>
+            <form action='{{ url_for('sign_up_page') }}' method = 'post'>
+                <div class='msg'>{{ msg }}</div>
+                <p> Username: </p>
+                <input id='username' name='username' type='text' />
+                <p> Password: </p>
+                <input id='password' name='password' type='text' /><br>
+                <input type='submit' value='Sign Up'>
+            </form>
+        </h2>
     </div>
-</body>
-
-
-</html>
+</div>
+{% endblock %}
