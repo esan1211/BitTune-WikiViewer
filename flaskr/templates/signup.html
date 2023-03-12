@@ -7,15 +7,15 @@
 <body>
     <div align='center'>
         <div align='center' class='border'>
-            <div class='header'>
-                <h1 class='word'>Sign Up</h1>
+            <div>
+                <h1> Sign Up</h1>
             </div>
-            <h2 class='word'>
+            <h2>
                 <form action='{{ url_for('signup') }}' method = 'post'>
                     <div class='msg'>{{ msg }}</div>
-                    <input id='username' name='username' type='text' class='textbox'/>
-                    <input id='password' name='password' type='text' class='textbox'/>
-                    <input type='submit' class='btn' value='Sign Up'>
+                    <input id='username' name='username' type='text' />
+                    <input id='password' name='password' type='text' />
+                    <input type='submit' value='Sign Up'>
                 </form>
             </h2>
         </div>
