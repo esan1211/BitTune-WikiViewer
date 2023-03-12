@@ -63,8 +63,8 @@ def make_endpoints(app):
     @app.route("/upload")
     def uploadPage():
         return render_template("upload.html")
-        
-    @app.route("/pages/<stored>")
+
+    @app.route("/pages/<stored>") #Danny
     def grabUploaded(stored):
         needPage = get_wiki_page(stored)
         return render_template(needPage)
