@@ -1,5 +1,7 @@
 from flask import render_template, request, redirect, url_for, session
 from flaskr.backend import Backend
+from werkzeug.utils import secure_filename
+import os
 
 
 def make_endpoints(app):
@@ -61,8 +63,28 @@ def make_endpoints(app):
         session.pop('username', None)
         return redirect(url_for('login'))
 
-    @app.route("/upload")
+
+    @app.route("/upload", methods = ['GET','POST']) #Enrique
     def uploadPage():
+        print('hi')
+        app.config['UPLOAD_FILE'] = "/home/enrique_munoz/project/"
+        if request.method == "POST":
+            
+            if request.files:
+                print(request.files)
+                f = request.files["myfile"]
+                
+                if f.filename == '':
+                    print("File cannot be empty")
+                    return redirect(request.url)
+                
+                basedir = os.path.abspath(os.path.dirname(__file__))
+                filename = secure_filename(f.filename)
+                f.save(os.path.join(os.path.join(basedir,app.config['UPLOAD_FILE'],filename)))
+                backend.upload(f.filename)
+                os.remove(f.filename)
+                return render_template("upload.html")
+                
         return render_template("upload.html")
 
     @app.route("/pages/<stored>") #Danny
