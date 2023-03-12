@@ -13,8 +13,10 @@
             <h2>
                 <form action='{{ url_for('sign_up_page') }}' method = 'post'>
                     <div class='msg'>{{ msg }}</div>
+                    <p> Username: </p>
                     <input id='username' name='username' type='text' />
-                    <input id='password' name='password' type='text' />
+                    <p> Password: </p>
+                    <input id='password' name='password' type='text' /><br>
                     <input type='submit' value='Sign Up'>
                 </form>
             </h2>
