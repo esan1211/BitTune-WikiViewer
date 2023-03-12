@@ -1,3 +1,7 @@
+# TODO(Project 1): Implement Backend according to the requirements.
+import os
+import pathlib
+from pathlib import Path
 from google.cloud import storage
 import hashlib
 
@@ -7,13 +11,14 @@ class Backend:
         pass
         
     def get_wiki_page(self, name): #Danny
-        bucket = storage.bucket("bt-wikiiewer-content")
+        storage_client = storage.Client()
+        bucket = storage_client.bucket("bt-wikiiewer-content")
         blob = bucket.get_blob(name + ".txt")
         with blob.open() as f:
             return f
 
     def get_all_page_names(self):#Danny
-        bucket = storage.bucket("bt-wikiiewer-content")
+        #bucket = storage.bucket("bt-wikiiewer-content")
         storage_client = storage.Client()
         blobs = storage_client.list_blobs("bt-wikiiewer-content")
 
@@ -27,7 +32,15 @@ class Backend:
 
         pass
 
-    def upload(self):
+    def upload(self, file_uploaded): #Enrique
+        storage_client = storage.Client()
+        bucket = storage_client.bucket("bt-wikiviewer-content")
+        if(file_uploaded.endswith(".txt")):
+            filename = "%s%s" % ('',file_uploaded)
+            blob = bucket.blob(filename)
+            with open(file_uploaded,'rb') as f:
+                blob.upload_from_file(f)
+                print("Uploaded")
         pass
 
     def sign_up(self, user, password): #Asis
@@ -65,6 +78,14 @@ class Backend:
                 else:
                     return False
 
-    def get_image(self):
+    def get_image(self, image): #Enrique
+        storage_client = storage.Client()
+        bucket = storage_client.bucket("bt-wikiviewer-content")
+        blobs = bucket.list_blobs()
+        for blob in blobs:
+            if image in blob.name:
+                print("")
+            # process file
         pass
+    
 

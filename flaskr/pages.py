@@ -1,8 +1,10 @@
 from flask import render_template, request, redirect, url_for, session
-from flaskr import backend
+from flaskr.backend import Backend
+
 
 def make_endpoints(app):
-
+    backend = Backend()
+    
     # Flask uses the "app.route" decorator to call methods when users
     # go to a specific route on the project's website.
     @app.route("/")
@@ -20,13 +22,12 @@ def make_endpoints(app):
     @app.route("/signup", methods = ['GET', 'POST']) #Asis
     def signUpPage():
         message = ''
-        be = backend.Backend()
 
         if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
             user = request.form['username']
             password = request.form[password]
             
-            if be.sign_up(user, password) == False:
+            if backend.sign_up(user, password) == False:
                 message = 'You already have an account!'
             elif not user or not password:
                 message = 'Create an account by entering a username and password!'
@@ -41,13 +42,12 @@ def make_endpoints(app):
     @app.route("/login", methods = ['GET', 'POST']) #Asis
     def logInPage():
         message = ''
-        be = backend.Backend()
 
         if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
             user = request.form['username']
             password = request.form['password']
 
-            if be.sign_in(user, password) == True:
+            if backend.sign_in(user, password) == True:
                 session['loggedin'] = True
                 session['username'] = user
                 message = 'You are logged in !'
@@ -66,9 +66,8 @@ def make_endpoints(app):
     @app.route("/upload")
     def uploadPage():
         return render_template("upload.html")
-'''       
-    @app.route("/pages/<stored>")
+
+    @app.route("/pages/<stored>") #Danny
     def grabUploaded(stored):
-        needPage = get_wiki_page(stored)
+        needPage = backend.get_wiki_page(stored)
         return render_template(needPage)
-'''
