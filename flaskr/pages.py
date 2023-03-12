@@ -18,9 +18,23 @@ def make_endpoints(app):
     def about():
         return render_template("about.html")
     
-    @app.route("/signup") #Asis
+    @app.route("/signup", methods = ['GET', 'POST']) #Asis
     def signUpPage():
-        return render_template("sign_up.html")
+        message = ''
+        if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
+            user = request.form['username']
+            password = request.form[password]
+            
+            if Backend.sign_up(user, password) == False:
+                message = 'You already have an account!'
+            elif not user or not password:
+                message = 'Create an account by entering a username and password!'
+            else:
+                'Your registration was successful!'
+        elif request.method == 'POST':
+            message = 'Create an account by entering a username and password!'
+
+        return render_template("sign_up.html", msg = message)
     
     @app.route("/")
     @app.route("/login", methods = ['GET', 'POST']) #Asis
@@ -39,6 +53,7 @@ def make_endpoints(app):
                 message = 'Incorrect username or password'
         
         return render_template("log_in.html", msg = message)
+    
     @app.route("/logout") #Asis
     def logOutPage():
         session.pop('loggedin', None)
