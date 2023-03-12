@@ -28,9 +28,6 @@ class Backend:
             blob_name_lst.append(blob.name)
             
         return blob_name_lst
-        
-
-        pass
 
     def upload(self, file_uploaded): #Enrique
         storage_client = storage.Client()
