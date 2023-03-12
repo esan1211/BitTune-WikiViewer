@@ -26,27 +26,28 @@ def make_endpoints(app):
     
     @app.route("/signup", methods = ['GET', 'POST']) #Asis
     def sign_up_page():
-        message = ''
+        msg = ''
 
         if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
             user = request.form['username']
-            password = request.form[password]
+            password = request.form['password']
             
             if backend.sign_up(user, password) == False:
-                message = 'You already have an account!'
+                msg = 'You already have an account!'
             elif not user or not password:
-                message = 'Create an account by entering a username and password!'
+                msg = 'Create an account by entering a username and password!'
             else:
-                'Your registration was successful!'
+                msg = 'Your sign up was successful!'
+        
         elif request.method == 'POST':
-            message = 'Create an account by entering a username and password!'
+            msg = 'Create an account by entering a username and password!'
 
-        return render_template("signup.html", msg = message) #Asis
+        return render_template("signup.html", msg = msg) #Asis
     
     
     @app.route("/login", methods = ['GET', 'POST']) #Asis
     def login_page():
-        message = ''
+        msg = ''
 
         if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
             user = request.form['username']
@@ -55,12 +56,12 @@ def make_endpoints(app):
             if backend.sign_in(user, password) == True:
                 session['loggedin'] = True
                 session['username'] = user
-                message = 'You are logged in !'
-                return render_template('main.html', msg = message)
+                msg = 'You are logged in !'
+                return render_template('main.html', msg = msg)
             else:
-                message = 'Incorrect username or password'
+                msg = 'Incorrect username or password'
         
-        return render_template("login.html", msg = message) #Asis
+        return render_template("login.html", msg = msg) #Asis
     
     @app.route("/logout") #Asis
     def logout_page():
