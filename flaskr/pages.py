@@ -22,8 +22,9 @@ def make_endpoints(app):
         return render_template("about.html")
     
     @app.route("/signup", methods = ['GET', 'POST']) #Asis
-    def signUpPage():
+    def sign_up_page():
         message = ''
+
         if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
             user = request.form['username']
             password = request.form[password]
@@ -41,8 +42,9 @@ def make_endpoints(app):
     
     @app.route("/")
     @app.route("/login", methods = ['GET', 'POST']) #Asis
-    def logInPage():
+    def login_page():
         message = ''
+
         if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
             user = request.form['username']
             password = request.form['password']
@@ -58,7 +60,7 @@ def make_endpoints(app):
         return render_template("login.html", msg = message) #Asis
     
     @app.route("/logout") #Asis
-    def logOutPage():
+    def logout_page():
         session.pop('loggedin', None)
         session.pop('username', None)
         return redirect(url_for('login'))
