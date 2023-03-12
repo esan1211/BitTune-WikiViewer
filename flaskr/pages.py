@@ -39,15 +39,10 @@ def make_endpoints(app):
             user = request.form['username']
             password = request.form['password']
             
-            if backend.sign_up(user, password) == False:
-                msg = 'You already have an account!'
-            elif not user or not password:
-                msg = 'Create an account by entering a username and password!'
+            if not backend.sign_up(user, password):
+                msg = 'You already have an account, Click Login!'
             else:
                 msg = 'Your sign up was successful!'
-        
-        elif request.method == 'POST':
-            msg = 'Create an account by entering a username and password!'
 
         return render_template("signup.html", msg = msg) #Asis
     
@@ -60,22 +55,17 @@ def make_endpoints(app):
             user = request.form['username']
             password = request.form['password']
 
-            if backend.sign_in(user, password) == True:
-                session['loggedin'] = True
-                session['username'] = user
+            if backend.sign_in(user, password) is True:         
                 msg = 'You are logged in !'
-                return render_template('main.html', msg = msg)
+                return render_template('logged_in.html', msg = msg, name = user)   
             else:
-                msg = 'Incorrect username or password'
-        
+                msg = 'Incorrect username or password'              
+
         return render_template("login.html", msg = msg) #Asis
     
     @app.route("/logout") #Asis
     def logout_page():
-        session.pop('loggedin', None)
-        session.pop('username', None)
-        return redirect(url_for('login'))
-
+        return render_template('main.html')
 
     @app.route("/upload", methods = ['GET','POST']) #Enrique
     def uploadPage():
