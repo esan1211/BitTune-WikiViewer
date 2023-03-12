@@ -15,7 +15,8 @@ def make_endpoints(app):
 
     @app.route("/pages")
     def pages():
-        return render_template("pages.html")
+        page_name_list = backend.get_all_page_names()
+        return render_template("pages.html", name_lst = page_name_list)
 
     @app.route("/about")
     def about():
@@ -71,5 +72,5 @@ def make_endpoints(app):
 
     @app.route("/pages/<stored>") #Danny
     def grabUploaded(stored):
-        needPage = backend.get_wiki_page(stored)
-        return render_template(needPage)
+        neededPage = backend.get_wiki_page(stored)
+        return neededPage #render_template(neededPage)

@@ -12,25 +12,26 @@ class Backend:
         
     def get_wiki_page(self, name): #Danny
         storage_client = storage.Client()
-        bucket = storage_client.bucket("bt-wikiiewer-content")
-        blob = bucket.get_blob(name + ".txt")
+        bucket = storage_client.bucket("bt-wikiviewer-content")
+        blob = bucket.get_blob(name)
+        print("hello", blob)
         with blob.open() as f:
-            return f
+            return f.read()
 
     def get_all_page_names(self):#Danny
         storage_client = storage.Client()
-        bucket = storage.bucket("bt-wikiiewer-content")
-        blobs = bucket.list_blobs("bt-wikiiewer-content")
+        blobs = storage_client.list_blobs("bt-wikiviewer-content")
 
         blob_name_lst = []
 
         for blob in blobs:
-            blob_name_lst.append(blob.name)
+            if(blob.name.endswith(".txt")):
+                blob_name_lst.append(blob.name)
+
+        print(blob_name_lst)
             
         return blob_name_lst
         
-
-        pass
 
     def upload(self, file_uploaded): #Enrique
         storage_client = storage.Client()
@@ -87,5 +88,8 @@ class Backend:
                 print("")
             # process file
         pass
+
+backend = Backend()
+backend.get_wiki_page("123.txt")
     
 
