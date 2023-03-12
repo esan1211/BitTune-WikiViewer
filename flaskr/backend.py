@@ -18,9 +18,9 @@ class Backend:
             return f
 
     def get_all_page_names(self):#Danny
-        #bucket = storage.bucket("bt-wikiiewer-content")
         storage_client = storage.Client()
-        blobs = storage_client.list_blobs("bt-wikiiewer-content")
+        bucket = storage.bucket("bt-wikiiewer-content")
+        blobs = bucket.list_blobs("bt-wikiiewer-content")
 
         blob_name_lst = []
 

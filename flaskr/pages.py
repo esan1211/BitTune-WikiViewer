@@ -12,9 +12,11 @@ def make_endpoints(app):
         return render_template("main.html")
 
     # TODO(Project 1): Implement additional routes according to the project requirements.
+
     @app.route("/pages")
     def pages():
         return render_template("pages.html")
+
     @app.route("/about")
     def about():
         return render_template("about.html")
@@ -37,7 +39,7 @@ def make_endpoints(app):
 
         return render_template("signup.html", msg = message) #Asis
     
-    @app.route("/")
+    
     @app.route("/login", methods = ['GET', 'POST']) #Asis
     def logInPage():
         message = ''
