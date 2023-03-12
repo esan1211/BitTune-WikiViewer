@@ -22,7 +22,10 @@ def make_endpoints(app):
 
     @app.route("/about")
     def about():
-        return render_template("about.html")
+        auth1#call get image
+        auth2#call get image
+        auth3#call get image
+        return render_template("about.html", Asis = auth1, Danny = auth2, Enrique = auth3)
     
     @app.route("/signup", methods = ['GET', 'POST']) #Asis
     def sign_up_page():
