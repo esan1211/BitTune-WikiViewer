@@ -1,9 +1,10 @@
 <!DOCTYPE html> 
 <html>
-    <head>
-        <title> Sign Up</title>
-    </head>
-</html>
+
+<head>
+    <title> Sign Up</title>
+</head>
+
 <body>
     <div align='center'>
         <div align='center' class='border'>
@@ -12,7 +13,9 @@
             </div>
             <h2>
                 <form action='{{ url_for('sign_up_page') }}' method = 'post'>
-                    <div class='msg'>{{ msg }}</div>
+                    {% if m sg%}
+                        <p class=error><strong>Error:</strong> {{ error }}
+                    {% endif %}
                     <p> Username: </p>
                     <input id='username' name='username' type='text' />
                     <p> Password: </p>
@@ -23,3 +26,6 @@
         </div>
     </div>
 </body>
+
+
+</html>
