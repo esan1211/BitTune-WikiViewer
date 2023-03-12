@@ -22,7 +22,7 @@ class Backend:
         with blob.open() as f:
             return f.read()
 
-    def get_all_page_names(self):#Danny
+    def get_all_page_names(self): #Danny
         storage_client = storage.Client()
         blobs = storage_client.list_blobs("bt-wikiviewer-content")
 
@@ -43,9 +43,15 @@ class Backend:
         if(file_uploaded.endswith(".txt")):
             filename = "%s%s" % ('',file_uploaded)
             blob = bucket.blob(filename)
+            basedir = os.path.abspath(os.path.dirname(file_uploaded))
+            print(file_uploaded)
             with open(file_uploaded,'rb') as f:
                 blob.upload_from_file(f)
+<<<<<<< HEAD
+        pass
+=======
                 print("Uploaded")
+>>>>>>> 3e552550d84f5b29e4f7af92b9f0c832384d1b53
 
     def sign_up(self, username, password): #Asis
         hashed = hashlib.sha256(password.encode()).hexdigest()
@@ -55,6 +61,14 @@ class Backend:
         storage_client = storage.Client()
 
         blobs = storage_client.list_blobs(bucket_name)
+<<<<<<< HEAD
+        if user not in blobs:
+            bucket = storage_client.bucket(bucket_name)
+            blob = bucket.blob(user)
+
+            hashed = hashlib.sha256(password.encode()).hexdigest()
+=======
+>>>>>>> 3e552550d84f5b29e4f7af92b9f0c832384d1b53
 
         for blob in blobs:
             if username == blob.name: 
@@ -84,15 +98,14 @@ class Backend:
             
     def get_image(self, image): #Enrique
         storage_client = storage.Client()
-        bucket = storage_client.bucket("bt-wikiviewer-content")
-        blobs = bucket.list_blobs()
+        blobs = storage_client.list_blobs("bt-wikiviewer-content")
         for blob in blobs:
-            if image in blob.name:
-                print("")
-            # process file
+            print(blob.name)
+            if blob.name == image:
+                print("Success")
+                print(blob)
+                return blob
+        print("Does not exist")
         pass
-
-backend = Backend()
-backend.get_wiki_page("123.txt")
     
 

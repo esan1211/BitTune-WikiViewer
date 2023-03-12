@@ -1,6 +1,8 @@
 from flask import render_template, request, redirect, url_for, session
 from flaskr.backend import Backend
 from werkzeug.utils import secure_filename
+import base64
+import io
 import os
 
 
@@ -20,8 +22,13 @@ def make_endpoints(app):
         page_name_list = backend.get_all_page_names()
         return render_template("pages.html", name_lst = page_name_list)
 
-    @app.route("/about")
+    @app.route("/about") #Enrique
     def about():
+        if request.method == 'GET':
+            img1 = backend.get_image("asis.jpeg")
+            img2 = backend.get_image("daniel.JPG")
+            img3 = backend.get_image("Enrique.png")
+            
         return render_template("about.html")
     
     @app.route("/signup", methods = ['GET', 'POST']) #Asis
@@ -62,12 +69,10 @@ def make_endpoints(app):
 
     @app.route("/upload", methods = ['GET','POST']) #Enrique
     def uploadPage():
-        print('hi')
-        app.config['UPLOAD_FILE'] = "/home/enrique_munoz/project/"
+        #app.config['UPLOAD_FILE'] = "/home/username/project/"
         if request.method == "POST":
             
             if request.files:
-                print(request.files)
                 f = request.files["myfile"]
                 
                 if f.filename == '':
@@ -76,7 +81,8 @@ def make_endpoints(app):
                 
                 basedir = os.path.abspath(os.path.dirname(__file__))
                 filename = secure_filename(f.filename)
-                f.save(os.path.join(os.path.join(basedir,app.config['UPLOAD_FILE'],filename)))
+                basedir = os.path.dirname(basedir)
+                f.save(os.path.join(os.path.join(basedir),filename))
                 backend.upload(f.filename)
                 os.remove(f.filename)
                 return render_template("upload.html")
