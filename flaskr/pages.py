@@ -52,7 +52,7 @@ def make_endpoints(app):
             else:
                 message = 'Incorrect username or password'
         
-        return render_template("log_in.html", msg = message)
+        return render_template("login.html", msg = message)
     
     @app.route("/logout") #Asis
     def logOutPage():
