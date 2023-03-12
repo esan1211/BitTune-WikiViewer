@@ -34,7 +34,7 @@ def make_endpoints(app):
         elif request.method == 'POST':
             message = 'Create an account by entering a username and password!'
 
-        return render_template("sign_up.html", msg = message)
+        return render_template("signup.html", msg = message) #Asis
     
     @app.route("/")
     @app.route("/login", methods = ['GET', 'POST']) #Asis
@@ -52,7 +52,7 @@ def make_endpoints(app):
             else:
                 message = 'Incorrect username or password'
         
-        return render_template("login.html", msg = message)
+        return render_template("login.html", msg = message) #Asis
     
     @app.route("/logout") #Asis
     def logOutPage():
