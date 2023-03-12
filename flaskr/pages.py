@@ -1,6 +1,8 @@
 from flask import render_template, request, redirect, url_for, session
 from flaskr.backend import Backend
 from werkzeug.utils import secure_filename
+import base64
+import io
 import os
 
 
@@ -20,12 +22,14 @@ def make_endpoints(app):
         page_name_list = backend.get_all_page_names()
         return render_template("pages.html", name_lst = page_name_list)
 
-    @app.route("/about")
+    @app.route("/about") #Enrique
     def about():
-        auth1#call get image
-        auth2#call get image
-        auth3#call get image
-        return render_template("about.html", Asis = auth1, Danny = auth2, Enrique = auth3)
+        if request.method == 'GET':
+            img1 = backend.get_image("asis.jpeg")
+            img2 = backend.get_image("daniel.JPG")
+            img3 = backend.get_image("Enrique.png")
+            
+        return render_template("about.html")
     
     @app.route("/signup", methods = ['GET', 'POST']) #Asis
     def sign_up_page():
@@ -35,15 +39,10 @@ def make_endpoints(app):
             user = request.form['username']
             password = request.form['password']
             
-            if backend.sign_up(user, password) == False:
-                msg = 'You already have an account!'
-            elif not user or not password:
-                msg = 'Create an account by entering a username and password!'
+            if not backend.sign_up(user, password):
+                msg = 'You already have an account, Click Login!'
             else:
                 msg = 'Your sign up was successful!'
-        
-        elif request.method == 'POST':
-            msg = 'Create an account by entering a username and password!'
 
         return render_template("signup.html", msg = msg) #Asis
     
@@ -56,31 +55,24 @@ def make_endpoints(app):
             user = request.form['username']
             password = request.form['password']
 
-            if backend.sign_in(user, password) == True:
-                session['loggedin'] = True
-                session['username'] = user
+            if backend.sign_in(user, password) is True:         
                 msg = 'You are logged in !'
-                return render_template('main.html', msg = msg)
+                return render_template('logged_in.html', msg = msg, name = user)   
             else:
-                msg = 'Incorrect username or password'
-        
+                msg = 'Incorrect username or password'              
+
         return render_template("login.html", msg = msg) #Asis
     
     @app.route("/logout") #Asis
     def logout_page():
-        session.pop('loggedin', None)
-        session.pop('username', None)
-        return redirect(url_for('login'))
-
+        return render_template('main.html')
 
     @app.route("/upload", methods = ['GET','POST']) #Enrique
     def uploadPage():
-        print('hi')
-        app.config['UPLOAD_FILE'] = "/home/enrique_munoz/project/"
+        #app.config['UPLOAD_FILE'] = "/home/username/project/"
         if request.method == "POST":
             
             if request.files:
-                print(request.files)
                 f = request.files["myfile"]
                 
                 if f.filename == '':
@@ -89,7 +81,8 @@ def make_endpoints(app):
                 
                 basedir = os.path.abspath(os.path.dirname(__file__))
                 filename = secure_filename(f.filename)
-                f.save(os.path.join(os.path.join(basedir,app.config['UPLOAD_FILE'],filename)))
+                basedir = os.path.dirname(basedir)
+                f.save(os.path.join(os.path.join(basedir),filename))
                 backend.upload(f.filename)
                 os.remove(f.filename)
                 return render_template("upload.html")
