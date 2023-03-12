@@ -56,29 +56,31 @@ class Backend:
 
         blobs = storage_client.list_blobs(bucket_name)
 
-        if username not in blobs: 
-            bucket = storage_client.bucket(bucket_name)
-            blob = bucket.blob(username)
-            with blob.open('w') as f:
-                f.write(hashed)
-        else:
-            return None
+        for blob in blobs:
+            if username == blob.name: 
+                return None
+        bucket = storage_client.bucket(bucket_name)
+        blob = bucket.blob(username)
+        with blob.open('w') as f:
+            f.write(hashed)
 
     def sign_in(self, username, password): #Asis
         hashed = hashlib.sha256(password.encode()).hexdigest()
-
         bucket_name = "bt-wikiviewer-users_passwords"
 
         storage_client = storage.Client()
         bucket = storage_client.bucket(bucket_name)
 
         blobs = storage_client.list_blobs(bucket_name)
-        if username in blobs:
-            blob = bucket.get_blob(username)
-            with blob.open("rb") as f:
-                stored = f.read()
-            if stored == hashed:
-                return True
+        for blob in blobs:
+            if username == blob.name:
+                print('HELLO')
+                blob = bucket.get_blob(username)
+                with blob.open("r") as f:
+                    stored = f.read()
+                    print('HELLO' + stored)
+                if stored == hashed:
+                    return True
             
     def get_image(self, image): #Enrique
         storage_client = storage.Client()

@@ -50,7 +50,7 @@ def make_endpoints(app):
 
             if backend.sign_in(user, password) is True:         
                 msg = 'You are logged in !'
-                return render_template('logged_in', msg = msg, name = user)   
+                return render_template('logged_in.html', msg = msg, name = user)   
             else:
                 msg = 'Incorrect username or password'              
 
@@ -58,10 +58,7 @@ def make_endpoints(app):
     
     @app.route("/logout") #Asis
     def logout_page():
-        session.pop('loggedin', None)
-        session.pop('username', None)
-        return redirect(url_for('login'))
-
+        return render_template('main.html')
 
     @app.route("/upload", methods = ['GET','POST']) #Enrique
     def uploadPage():
