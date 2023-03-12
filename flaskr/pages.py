@@ -1,9 +1,10 @@
 from flask import render_template, request, redirect, url_for, session
-from backend import Backend
+from flaskr.backend import Backend
 
 
 def make_endpoints(app):
-
+    backend = Backend()
+    
     # Flask uses the "app.route" decorator to call methods when users
     # go to a specific route on the project's website.
     @app.route("/")
@@ -25,7 +26,7 @@ def make_endpoints(app):
             user = request.form['username']
             password = request.form[password]
             
-            if Backend.sign_up(user, password) == False:
+            if backend.sign_up(user, password) == False:
                 message = 'You already have an account!'
             elif not user or not password:
                 message = 'Create an account by entering a username and password!'
@@ -44,7 +45,7 @@ def make_endpoints(app):
             user = request.form['username']
             password = request.form['password']
 
-            if Backend.sign_in(user, password) == True:
+            if backend.sign_in(user, password) == True:
                 session['loggedin'] = True
                 session['username'] = user
                 message = 'You are logged in !'
@@ -66,5 +67,5 @@ def make_endpoints(app):
         
     @app.route("/pages/<stored>")
     def grabUploaded(stored):
-        needPage = get_wiki_page(stored)
+        needPage = backend.get_wiki_page(stored)
         return render_template(needPage)
