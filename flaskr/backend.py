@@ -5,8 +5,12 @@ from pathlib import Path
 from google.cloud import storage
 import hashlib
 
-class Backend:
+class User:
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
 
+class Backend:
     def __init__(self):
         pass
         
@@ -14,7 +18,7 @@ class Backend:
         storage_client = storage.Client()
         bucket = storage_client.bucket("bt-wikiviewer-content")
         blob = bucket.get_blob(name)
-        print("hello", blob)
+        #print("hello", blob)
         with blob.open() as f:
             return f.read()
 
@@ -28,7 +32,7 @@ class Backend:
             if(blob.name.endswith(".txt")):
                 blob_name_lst.append(blob.name)
 
-        print(blob_name_lst)
+        #print(blob_name_lst)
             
         return blob_name_lst
         
@@ -42,43 +46,40 @@ class Backend:
             with open(file_uploaded,'rb') as f:
                 blob.upload_from_file(f)
                 print("Uploaded")
-        pass
 
-    def sign_up(self, user, password): #Asis
+    def sign_up(self, username, password): #Asis
+        hashed = hashlib.sha256(password.encode()).hexdigest()
+
         bucket_name = "bt-wikiviewer-users_passwords"
         
         storage_client = storage.Client()
 
         blobs = storage_client.list_blobs(bucket_name)
-        if user not in blobs: 
+
+        if username not in blobs: 
             bucket = storage_client.bucket(bucket_name)
-            blob = bucket.blob(user)
-
-            hashed = hashlib.sha256(password.encode()).hexdigest()
-
-            with blob.open("w") as f:
+            blob = bucket.blob(username)
+            with blob.open('w') as f:
                 f.write(hashed)
         else:
-            return False
+            return None
 
-    def sign_in(self, user, password): #Asis
+    def sign_in(self, username, password): #Asis
+        hashed = hashlib.sha256(password.encode()).hexdigest()
+
         bucket_name = "bt-wikiviewer-users_passwords"
 
         storage_client = storage.Client()
-
         bucket = storage_client.bucket(bucket_name)
 
         blobs = storage_client.list_blobs(bucket_name)
-        for b in blobs:
-            if b == user:
-                blob = bucket.blob(user)
-                with blob.open("r") as f:
-                    hashed = f.read()
-                if hashed == hashlib.sha256(password.encode()).hexdigest():
-                    return True
-                else:
-                    return False
-
+        if username in blobs:
+            blob = bucket.get_blob(username)
+            with blob.open("rb") as f:
+                stored = f.read()
+            if stored == hashed:
+                return True
+            
     def get_image(self, image): #Enrique
         storage_client = storage.Client()
         bucket = storage_client.bucket("bt-wikiviewer-content")
