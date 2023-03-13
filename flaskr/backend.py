@@ -78,11 +78,9 @@ class Backend:
         blobs = storage_client.list_blobs(bucket_name)
         for blob in blobs:
             if username == blob.name:
-                #print('HELLO')
                 blob = bucket.get_blob(username)
                 with blob.open("r") as f:
                     stored = f.read()
-                    #print('HELLO' + stored)
                 if stored == hashed:
                     return True
             

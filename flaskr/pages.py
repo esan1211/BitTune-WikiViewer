@@ -84,6 +84,7 @@ def make_endpoints(app):
                 filename = secure_filename(f.filename)
                 basedir = os.path.dirname(basedir)
                 f.save(os.path.join(os.path.join(basedir),filename))
+                backend.upload(filename)
                 os.remove(f.filename)
                 return render_template("upload.html")
                 
