@@ -42,7 +42,7 @@ def make_endpoints(app):
             if not backend.sign_up(user, password):
                 msg = 'You already have an account, Click Login!'
             else:
-                msg = 'Your sign up was successful!'
+                msg = 'Your sign up was successful, Click Login!'
 
         return render_template("signup.html", msg = msg) #Asis
     
@@ -56,7 +56,6 @@ def make_endpoints(app):
             password = request.form['password']
 
             if backend.sign_in(user, password) is True:         
-                msg = 'You are logged in !'
                 return render_template('logged_in.html', msg = msg, name = user)   
             else:
                 msg = 'Incorrect username or password'              

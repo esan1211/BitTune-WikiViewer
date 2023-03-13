@@ -1,8 +1,39 @@
 {% extends 'main.html' %}
 {% block navigation %}
-    <a href = "/">Home</a> <a href = "/pages">Pages</a> <a href= "/about">About</a> |
-    <a href = "/upload">Upload</a> <a href = "/logout">Logout</a>
-    <p>{{name}}</p>
+    <style>
+        .msg {
+            color: midnightblue;
+        }
+
+        .topnav {
+            background-color: lightslategray;
+            overflow: hidden;
+        }
+
+        .topnav a {
+            float: left;
+            color: whitesmoke;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        .topnav a:hover {
+            background-color: slategrey;
+            color: whitesmoke;
+        }
+
+        .topnav a.active {
+            background-color: midnightblue;
+            color: whitesmoke;
+        }
+    </style>
+    <div class='topnav'>
+        <a href = "/">Home</a> <a href = "/pages">Pages</a> <a href= "/about">About</a> 
+        <a href = "/upload">Upload</a> <a href = "/logout">Logout</a>
+        <p style="font-size: 17px; text-align: right;">{{name}}</p>
+    </div>
 {% endblock %}
 
 
