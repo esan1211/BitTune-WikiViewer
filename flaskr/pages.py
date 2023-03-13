@@ -27,9 +27,11 @@ def make_endpoints(app):
         if request.method == 'GET':
             img1 = backend.get_image("asis.jpeg")
             img2 = backend.get_image("daniel.JPG")
-            img3 = backend.get_image("Enrique.png")
-            
-        return render_template("about.html")
+            img3 = backend.get_image("enrique.jpg")
+            img1 = img1.decode('UTF-8')
+            img2 = img2.decode('UTF-8')
+            img3 = img3.decode('UTF-8')
+        return render_template("about.html", img1 = img1, img2 = img2, img3 = img3)
     
     @app.route("/signup", methods = ['GET', 'POST']) #Asis
     def sign_up_page():
