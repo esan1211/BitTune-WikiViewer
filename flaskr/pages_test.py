@@ -1,5 +1,6 @@
 from flaskr import create_app
-
+from unittest.mock import MagicMock
+from pathlib import Path
 import pytest
 
 # See https://flask.palletsprojects.com/en/2.2.x/testing/ 
@@ -15,11 +16,21 @@ def app():
 def client(app):
     return app.test_client()
 
+@pytest.fixture
+def bucket():
+    return MagicMock()
+
 # TODO(Checkpoint (groups of 4 only) Requirement 4): Change test to
 # match the changes made in the other Checkpoint Requirements.
-def test_home_page(client):
-    resp = client.get("/")
-    assert resp.status_code == 200
-    assert b"Hello, World!\n" in resp.data
 
 # TODO(Project 1): Write tests for other routes.
+def test_home_page(client): #Enrique
+    resp = client.get("/")
+    assert resp.status_code == 200
+    assert b"<title>Wiki Music Museum</title>" in resp.data
+
+resources = Path(__file__).parent
+def test_upload_page(client, app): #Enrique
+    resp = client.post("/upload", data={"myfile": "test.txt"})
+    assert b"<h2>Upload</h2>" in resp.data
+    assert resp.status_code == 200

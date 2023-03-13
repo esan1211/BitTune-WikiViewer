@@ -7,34 +7,38 @@ import os
 
 
 def make_endpoints(app):
+    """Sets up routing"""
     backend = Backend()
     
     # Flask uses the "app.route" decorator to call methods when users
     # go to a specific route on the project's website.
     @app.route("/")
     def home():
+        """Renders the main page of the wiki"""
         return render_template("main.html")
 
     # TODO(Project 1): Implement additional routes according to the project requirements.
 
     @app.route("/pages")
     def pages():
+        """Renders a specific page that the user selected from the available pages"""
         page_name_list = backend.get_all_page_names()
         return render_template("pages.html", name_lst = page_name_list)
 
     @app.route("/about") #Enrique
     def about():
-        if request.method == 'GET':
-            img1 = backend.get_image("asis.jpeg")
-            img2 = backend.get_image("daniel.JPG")
-            img3 = backend.get_image("enrique.jpg")
-            img1 = img1.decode('UTF-8')
-            img2 = img2.decode('UTF-8')
-            img3 = img3.decode('UTF-8')
+        """Sets up image rendering for the about page"""
+        img1 = backend.get_image("asis.jpeg")
+        img2 = backend.get_image("daniel.JPG")
+        img3 = backend.get_image("enrique.jpg")
+        img1 = img1.decode('UTF-8')
+        img2 = img2.decode('UTF-8')
+        img3 = img3.decode('UTF-8')
         return render_template("about.html", img1 = img1, img2 = img2, img3 = img3)
     
     @app.route("/signup", methods = ['GET', 'POST']) #Asis
     def sign_up_page():
+        """Allows user to sign up to access wikiviewer's functionalities"""
         msg = ''
 
         if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
@@ -51,6 +55,7 @@ def make_endpoints(app):
     
     @app.route("/login", methods = ['GET', 'POST']) #Asis
     def login_page():
+        """Allows user to login once they have an account available."""
         msg = ''
 
         if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
@@ -66,10 +71,12 @@ def make_endpoints(app):
     
     @app.route("/logout") #Asis
     def logout_page():
+        """Allows user to logout after being logging in"""
         return render_template('main.html')
 
     @app.route("/upload", methods = ['GET','POST']) #Enrique
     def uploadPage():
+        """Once logged in, allows user to upload their own html files"""
         #app.config['UPLOAD_FILE'] = "/home/username/project/"
         if request.method == "POST":
             
@@ -92,5 +99,6 @@ def make_endpoints(app):
 
     @app.route("/pages/<stored>") #Danny
     def grabUploaded(stored):
+        """Renders specific selected page"""
         neededPage = backend.get_wiki_page(stored)
         return neededPage #render_template(neededPage)
