@@ -55,7 +55,7 @@ def make_endpoints(app):
             user = request.form['username']
             password = request.form['password']
 
-            if backend.sign_in(user, password) is True:         
+            if backend.sign_in(user, password) is True:
                 return render_template('logged_in.html', msg = msg, name = user)   
             else:
                 msg = 'Incorrect username or password'              
