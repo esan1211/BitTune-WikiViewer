@@ -8,14 +8,14 @@
 <div align='center'>
     <div align='center'>
         <div>
-            <h1> Login </h1>  
+            <h1 style="font-size: 40px;"> Login </h1>  
         </div>
         <h2>
             <form action='{{ url_for('login_page') }}' method = 'post'>
                 <div class='msg'>{{ msg }}</div>
-                <p> Username: </p>
+                <p style="font-size: 18px;"> Username: </p>
                 <input id='username' name='username' type='text' />
-                <p> Password: </p>
+                <p style="font-size: 18px;"> Password: </p>
                 <input id='password' name='password' type='text' /><br>
                 <input type='submit' value='Login'>
             </form>

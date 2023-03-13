@@ -66,6 +66,7 @@ class Backend:
         blob = bucket.blob(username)
         with blob.open('w') as f:
             f.write(hashed)
+        return True
 
     def sign_in(self, username, password): #Asis
         hashed = hashlib.sha256(password.encode()).hexdigest()
@@ -77,11 +78,11 @@ class Backend:
         blobs = storage_client.list_blobs(bucket_name)
         for blob in blobs:
             if username == blob.name:
-                print('HELLO')
+                #print('HELLO')
                 blob = bucket.get_blob(username)
                 with blob.open("r") as f:
                     stored = f.read()
-                    print('HELLO' + stored)
+                    #print('HELLO' + stored)
                 if stored == hashed:
                     return True
             
