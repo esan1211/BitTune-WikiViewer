@@ -29,7 +29,6 @@ def test_home_page(client): #Enrique
     assert resp.status_code == 200
     assert b"<title>Wiki Music Museum</title>" in resp.data
 
-resources = Path(__file__).parent
 def test_upload_page(client, app): #Enrique
     resp = client.post("/upload", data={"myfile": "test.txt"})
     assert b"<h2>Upload</h2>" in resp.data
