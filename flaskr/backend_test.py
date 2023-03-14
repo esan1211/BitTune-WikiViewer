@@ -43,9 +43,8 @@ def test_get_image_fail(mock_client): #Enrique
     mock_client.return_value = mock_bucket
     with patch("base64.b64encode") as encode:
         mock_encoding = None
-        with patch("google.cloud.storage.Client"):
-            result = backend.get_image("image.jpg")
-            assert result == mock_encoding
+        result = backend.get_image(" ")
+        assert result == mock_encoding
     
 
 
