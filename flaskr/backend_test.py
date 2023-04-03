@@ -3,19 +3,22 @@ from unittest.mock import MagicMock, patch, mock_open
 from google.cloud import storage
 import pytest
 
+
 # TODO(Project 1): Write tests for Backend methods.
 @patch('google.cloud.storage.Client')
-def test_upload(mock_client): #Enrique
+def test_upload(mock_client):  #Enrique
     backend = Backend()
     mock_data = b"Test"
     mock_file = MagicMock()
     mock_file.endswith.return_value = "txt"
-    with patch("builtins.open", mock_open(read_data = mock_data)) as mock_open_func:
+    with patch("builtins.open",
+               mock_open(read_data=mock_data)) as mock_open_func:
         backend.upload(mock_file)
     mock_open_func.assert_called_once_with(mock_file, "rb")
 
+
 @patch('google.cloud.storage.Client')
-def test_get_image_success(mock_client): #Enrique
+def test_get_image_success(mock_client):  #Enrique
     backend = Backend()
     mock_bucket_name = "test"
     mock_blob = MagicMock()
@@ -30,8 +33,9 @@ def test_get_image_success(mock_client): #Enrique
         mock_encoding = backend.get_image("image.jpg")
         assert result == mock_encoding
 
+
 @patch('google.cloud.storage.Client')
-def test_get_image_fail(mock_client): #Enrique
+def test_get_image_fail(mock_client):  #Enrique
     backend = Backend()
     mock_bucket_name = "test"
     mock_blob = MagicMock()
@@ -45,7 +49,3 @@ def test_get_image_fail(mock_client): #Enrique
         mock_encoding = None
         result = backend.get_image(" ")
         assert result == mock_encoding
-    
-
-
-
