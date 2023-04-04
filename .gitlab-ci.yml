@@ -10,8 +10,9 @@ lint:
 unittest:
  stage: test
  script:
+  - pip install --upgrade pytest
   - pip install -r requirements.txt
-  - pytest project
+  - pytest .
  only:
   - pushes
 
