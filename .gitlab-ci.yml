@@ -7,6 +7,14 @@ lint:
   only:
     - pushes
 
+unittest:
+ stage: test
+ script:
+  - pip install -r requirements.txt
+  - pytest .
+ only:
+  - pushes
+
 prod:
  image: google/cloud-sdk:alpine
  stage: deploy
@@ -17,11 +25,3 @@ prod:
   - echo $SERVICE_ACCOUNT > /tmp/$CI_PIPELINE_ID.json
   - gcloud auth activate-service-account --key-file /tmp/$CI_PIPELINE_ID.json
   - gcloud --quiet --project $PROJECT_ID app deploy
-
-unittest:
- stage: test
- script:
-  - pip install -r requirements.txt
-  - pytest .
- only:
-  - pushes
