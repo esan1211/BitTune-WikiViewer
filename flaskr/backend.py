@@ -128,3 +128,10 @@ class Backend:
                     return encoded_string
         print("Does not exist")
         pass
+
+    def get_discussion_post(self): #Enrique
+        storage_client = storage.Client()
+        bucket = storage_client.bucket("bt-wikiviewer-discussions")
+        blob = bucket.get_blob()
+        with blob.open() as f:
+            return f.read()

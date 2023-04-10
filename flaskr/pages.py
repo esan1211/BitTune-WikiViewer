@@ -101,3 +101,7 @@ def make_endpoints(app):
         """Renders specific selected page"""
         neededPage = backend.get_wiki_page(stored)
         return neededPage  #render_template(neededPage)
+    
+    @app.route("/logged_in")
+    def logged_in():
+        return render_template("logged_in.html")
