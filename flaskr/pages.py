@@ -105,3 +105,28 @@ def make_endpoints(app):
     @app.route("/logged_in")
     def logged_in():
         return render_template("logged_in.html")
+
+    @app.route("/discussion", methods=['GET', 'POST']) #Enrique
+    def discussion():
+        if request.method == "POST":
+
+            if request.files:
+                f = request.files["myfile"]
+
+                if f.filename == '':
+                    print("File cannot be empty")
+                    return redirect(request.url)
+
+                basedir = os.path.abspath(os.path.dirname(__file__))
+                filename = secure_filename(f.filename)
+                basedir = os.path.dirname(basedir)
+                f.save(os.path.join(os.path.join(basedir), filename))
+                backend.upload_discussion_post(filename)
+                os.remove(f.filename)
+                return render_template("discussion.html")
+
+        return render_template("discussion.html")
+    
+    #@app.route("/discussion/<stored>") #Enrique
+        #discussion_posts = backend.get_discussion_post(stored)
+        #return

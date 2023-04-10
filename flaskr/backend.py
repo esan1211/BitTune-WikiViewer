@@ -135,3 +135,14 @@ class Backend:
         blob = bucket.get_blob()
         with blob.open() as f:
             return f.read()
+
+    def upload_discussion_post(self, file_uploaded):  #Enrique
+        """Allows user to upload a text file discussion into the GCS Discussions Bucket"""
+        storage_client = storage.Client()
+        bucket = storage_client.bucket("bt-wikiviewer-discussions")
+        if (file_uploaded.endswith(".txt")):
+            filename = "%s%s" % ('', file_uploaded)
+            blob = bucket.blob(filename)
+            with open(file_uploaded, 'rb') as f:
+                blob.upload_from_file(f)
+        pass

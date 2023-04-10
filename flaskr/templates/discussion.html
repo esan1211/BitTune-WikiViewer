@@ -1,1 +1,15 @@
 {% extends "main.html" %}
+
+{% block page_name %}
+<h2>Upload</h2>
+<h2 style="font-weight:100; font-size: 25px;">Museum Walls:</h2>
+{% endblock %}
+
+{% block content %}
+<h4>Please select a .txt file to upload:</h4>
+<form method="post" action="/discussion" enctype="multipart/form-data">
+  <label for="myfile">Select a file:</label>
+  <input type="file" id="myfile" name="myfile"><br><br>
+  <input type="submit">
+</form>
+{% endblock %}
