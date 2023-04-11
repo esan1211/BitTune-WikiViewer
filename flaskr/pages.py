@@ -101,3 +101,10 @@ def make_endpoints(app):
         """Renders specific selected page"""
         neededPage = backend.get_wiki_page(stored)
         return neededPage  #render_template(neededPage)
+
+    @app.route("/pages")
+    def search_results(): #Asis
+        keyword = request.form['keyword']
+        valid_lst = backend.search_keyword(keyword)
+        return render_template("pages.html", name_lst=valid_lst)
+        
