@@ -3,6 +3,9 @@ from unittest.mock import MagicMock, patch, mock_open
 from google.cloud import storage
 import pytest
 
+'''I was tasked to create a search bar for Daniel's User Pages, so this test doubles for me fulfilling the User Pages R1
+    requirement that I was assigned, as well as Requirement 1 in the Merge Requests checkpoint"
+'''
 @patch('google.cloud.storage.Client')
 def test_search_keyword(mock_client): 
     backend = Backend()
