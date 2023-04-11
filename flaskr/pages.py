@@ -108,6 +108,7 @@ def make_endpoints(app):
 
     @app.route("/discussion", methods=['GET', 'POST']) #Enrique
     def discussion():
+        """Allows user to upload discussion post"""
         if request.method == "POST":
 
             if request.files:
@@ -127,6 +128,14 @@ def make_endpoints(app):
 
         return render_template("discussion.html")
     
-    #@app.route("/discussion/<stored>") #Enrique
-        #discussion_posts = backend.get_discussion_post(stored)
-        #return
+    @app.route("/discussion")
+    def discussion_post():
+        """Shows user all available discussion posts"""
+        discussion_posts = backend.get_all_discussion_posts()
+        return render_template("discussion.html", discussion_list=discussion_posts)
+
+    @app.route("/discussion/<stored>") #Enrique
+    def get_discussion_posts(stored):
+        """Allows user to select a specific discussion posts to access"""
+        discussion_posts = backend.get_discussion_post(stored)
+        return discussion_posts

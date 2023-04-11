@@ -1,14 +1,20 @@
 {% extends "main.html" %}
 
 {% block page_name %}
-<h2>Upload</h2>
-<h2 style="font-weight:100; font-size: 25px;">Museum Walls:</h2>
+<h2>Discussion Posts</h2>
 {% endblock %}
 
 {% block content %}
+<h2 style="font-weight:100; font-size: 25px;">These are the available discussion posts:</h2>
+<ul style="list-style-type:none;">
+    {% for name in discussion_list %}
+    <li> <a style="color: midnightblue;" href = "{{url_for('get_discussion_posts', stored = name)}}">{{name}}</a> </li> <br>
+    {% endfor %}
+</ul>
+<h2 style="font-weight:100; font-size: 25px;">Upload Discussion Post:</h2>
 <h4>Please select a .txt file to upload:</h4>
 <form method="post" action="/discussion" enctype="multipart/form-data">
-  <label for="myfile">Select a file:</label>
+  <label for="myfile">Select a file to upload discussion post:</label>
   <input type="file" id="myfile" name="myfile"><br><br>
   <input type="submit">
 </form>

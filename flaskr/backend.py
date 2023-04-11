@@ -129,12 +129,23 @@ class Backend:
         print("Does not exist")
         pass
 
-    def get_discussion_post(self): #Enrique
+    def get_discussion_post(self,post): #Enrique
+        """Gets a specific discussion posts page"""
         storage_client = storage.Client()
         bucket = storage_client.bucket("bt-wikiviewer-discussions")
-        blob = bucket.get_blob()
+        blob = bucket.get_blob(post)
         with blob.open() as f:
             return f.read()
+
+    def get_all_discussion_posts(self): #Enrique
+        """Shows user all available discussion posts"""
+        storage_client = storage.Client()
+        blobs = storage_client.list_blobs("bt-wikiviewer-discussions")
+        discussion_list = []
+        for blob in blobs:
+            if (blob.name.endswith(".txt")):
+                discussion_list.append(blob.name)
+        return discussion_list
 
     def upload_discussion_post(self, file_uploaded):  #Enrique
         """Allows user to upload a text file discussion into the GCS Discussions Bucket"""
