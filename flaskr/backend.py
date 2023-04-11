@@ -147,7 +147,7 @@ class Backend:
                 discussion_list.append(blob.name)
         return discussion_list
 
-    def upload_discussion_post(self, file_uploaded):  #Enrique
+    def upload_discussion_post(self, file_uploaded): #Enrique
         """Allows user to upload a text file discussion into the GCS Discussions Bucket"""
         storage_client = storage.Client()
         bucket = storage_client.bucket("bt-wikiviewer-discussions")

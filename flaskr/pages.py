@@ -25,7 +25,7 @@ def make_endpoints(app):
         page_name_list = backend.get_all_page_names()
         return render_template("pages.html", name_lst=page_name_list)
 
-    @app.route("/about")  #Enrique
+    @app.route("/about") #Enrique
     def about():
         """Sets up image rendering for the about page"""
         img1 = backend.get_image("asis.jpeg")
@@ -73,7 +73,7 @@ def make_endpoints(app):
         """Allows user to logout after being logging in"""
         return render_template('main.html')
 
-    @app.route("/upload", methods=['GET', 'POST'])  #Enrique
+    @app.route("/upload", methods=['GET', 'POST']) #Enrique
     def uploadPage():
         """Once logged in, allows user to upload their own html files"""
         #app.config['UPLOAD_FILE'] = "/home/username/project/"
@@ -128,14 +128,14 @@ def make_endpoints(app):
 
         return render_template("discussion.html")
     
-    @app.route("/discussion")
-    def discussion_post():
+    @app.route("/discussion") #Enrique
+    def discussion_posts():
         """Shows user all available discussion posts"""
         discussion_posts = backend.get_all_discussion_posts()
         return render_template("discussion.html", discussion_list=discussion_posts)
 
     @app.route("/discussion/<stored>") #Enrique
-    def get_discussion_posts(stored):
+    def get_discussion_post(stored):
         """Allows user to select a specific discussion posts to access"""
         discussion_posts = backend.get_discussion_post(stored)
         return discussion_posts
