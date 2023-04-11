@@ -49,3 +49,4 @@ def test_get_image_fail(mock_client):  #Enrique
         mock_encoding = None
         result = backend.get_image(" ")
         assert result == mock_encoding
+
