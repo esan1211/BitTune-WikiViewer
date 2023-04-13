@@ -31,6 +31,7 @@ class User:
         """Inits User instance with username and password."""
         self.username = username
         self.password = password
+        self.file_lst = []
 
 
 class Backend:

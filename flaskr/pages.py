@@ -1,5 +1,6 @@
 from flask import render_template, request, redirect, url_for, session
 from flaskr.backend import Backend
+from flaskr.backend import User
 from werkzeug.utils import secure_filename
 import base64
 import io
@@ -9,6 +10,8 @@ import os
 def make_endpoints(app):
     """Sets up routing"""
     backend = Backend()
+    current_user = User(None, None)
+
 
     # Flask uses the "app.route" decorator to call methods when users
     # go to a specific route on the project's website.
@@ -61,6 +64,8 @@ def make_endpoints(app):
             user = request.form['username']
             password = request.form['password']
 
+            current_user.username = user
+
             if backend.sign_in(user, password) is True:
                 return render_template('logged_in.html', msg=msg, name=user)
             else:
@@ -71,6 +76,8 @@ def make_endpoints(app):
     @app.route("/logout")  #Asis
     def logout_page():
         """Allows user to logout after being logging in"""
+
+        current_user.username = None
         return render_template('main.html')
 
     @app.route("/upload", methods=['GET', 'POST'])  #Enrique
@@ -87,18 +94,18 @@ def make_endpoints(app):
                     return redirect(request.url)
 
                 basedir = os.path.abspath(os.path.dirname(__file__))
-                filename = secure_filename(f.filename)
+                filename = secure_filename(f.filename) #add to list
                 basedir = os.path.dirname(basedir)
                 f.save(os.path.join(os.path.join(basedir), filename))
                 backend.upload(filename)
                 os.remove(f.filename)
-                return render_template("upload.html")
+                return render_template("upload.html", name=current_user.username)
 
-        return render_template("upload.html")
+        return render_template("upload.html", name=current_user.username)
 
     @app.route("/logged_in") #Danny
     def logged_in():
-        return render_template("logged_in.html")
+        return render_template("logged_in.html", name=current_user.username)
     
     #--
     @app.route("/logged_about")  #Danny
@@ -110,7 +117,7 @@ def make_endpoints(app):
         img1 = img1.decode('UTF-8')
         img2 = img2.decode('UTF-8')
         img3 = img3.decode('UTF-8')
-        return render_template("logged_about.html", img1=img1, img2=img2, img3=img3)
+        return render_template("logged_about.html", img1=img1, img2=img2, img3=img3, name=current_user.username)
     #--
 
     #--
@@ -118,7 +125,7 @@ def make_endpoints(app):
     def logged_pages():
         """Renders a specific page that the user selected from the available pages"""
         page_name_list = backend.get_all_page_names()
-        return render_template("logged_pages.html", name_lst=page_name_list)
+        return render_template("logged_pages.html", name_lst=page_name_list, name=current_user.username)
     #--
 
     @app.route("/pages/<stored>")  #Danny
@@ -130,10 +137,16 @@ def make_endpoints(app):
     @app.route("/user_page", methods = ['GET', 'POST'])
     def grabUser():
         #check request
+        if request.method == 'POST' and 'user' in request.form:
+
         #set variables
+            user = request.form['username']
+
         #check if user exists
+        if backend.user_exists(user):
         #  if they do
         #   get user page
+            user_page_lst = backend.get_user_pages()        
         #   return user page
         #  else
         #   return dont exist page
