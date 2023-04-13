@@ -7,8 +7,8 @@
 {% block content %}
 <h2 style="font-weight:100; font-size: 25px;">These are the available discussion posts:</h2>
 <ul style="list-style-type:none;">
-    {% for name in discussion_list %}
-    <li> <a style="color: rgb(240, 122, 26);" href = "{{url_for('get_discussion_post', stored = name)}}">{{name}}</a> </li> <br>
+    {% for post in discussion_list %}
+    <li> <a style="color: rgb(185, 28, 28);" href = "{{url_for('get_discussion_post', stored = post)}}">{{post}}</a> </li> <br>
     {% endfor %}
 </ul>
 <h2 style="font-weight:100; font-size: 25px;">Upload Discussion Post:</h2>

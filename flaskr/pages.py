@@ -105,6 +105,12 @@ def make_endpoints(app):
     @app.route("/logged_in")
     def logged_in():
         return render_template("logged_in.html")
+    
+    @app.route("/discussion") #Enrique
+    def discussion_posts():
+        """Shows user all available discussion posts"""
+        discussion_posts = backend.get_all_discussion_posts()
+        return render_template("discussion.html", discussion_list=discussion_posts)
 
     @app.route("/discussion", methods=['GET', 'POST']) #Enrique
     def discussion():
@@ -124,15 +130,12 @@ def make_endpoints(app):
                 f.save(os.path.join(os.path.join(basedir), filename))
                 backend.upload_discussion_post(filename)
                 os.remove(f.filename)
-                return render_template("discussion.html")
+                discussion_posts = backend.get_all_discussion_posts()
+                return render_template("discussion.html", discussion_list=discussion_posts)
 
-        return render_template("discussion.html")
-    
-    @app.route("/discussion") #Enrique
-    def discussion_posts():
-        """Shows user all available discussion posts"""
         discussion_posts = backend.get_all_discussion_posts()
         return render_template("discussion.html", discussion_list=discussion_posts)
+    
 
     @app.route("/discussion/<stored>") #Enrique
     def get_discussion_post(stored):

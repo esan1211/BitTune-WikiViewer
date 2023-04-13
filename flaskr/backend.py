@@ -145,6 +145,7 @@ class Backend:
         for blob in blobs:
             if (blob.name.endswith(".txt")):
                 discussion_list.append(blob.name)
+        print(discussion_list)
         return discussion_list
 
     def upload_discussion_post(self, file_uploaded): #Enrique
