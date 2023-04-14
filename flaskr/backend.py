@@ -147,6 +147,34 @@ class Backend:
                 discussion_list.append(blob.name)
         print(discussion_list)
         return discussion_list
+    
+    def create_discussion(self,file,title,context): #Enrique
+        with open(file, 'w') as f:
+            f.write("<!DOCTYPE html>\n")
+            f.write("<html>\n\n")
+            f.write("<head>\n")
+            f.write("   <head>\n")
+            f.write("       <title>Wiki Music Museum</title>\n\n")
+            f.write("       <div align = 'center'>\n")
+            f.write("           <h1>")
+            f.write(title)
+            f.write("</h1>\n")
+            f.write("       </div>\n\n\n")
+            f.write("   <head>\n")
+            f.write("</head>\n\n")
+            f.write("<body>\n\n")
+            f.write("   <div align = 'center'>\n")
+            f.write("       <h3>")
+            f.write(context)
+            f.write("<h3>\n")
+            f.write("</body>\n\n")
+            f.write("</html>")
+            f.write("<style>\n")
+            f.write("   body {\n")
+            f.write("       background-color: #5FA8B0;")
+            f.write("   }")
+            f.write("<style>\n")
+        pass
 
     def upload_discussion_post(self, file_uploaded): #Enrique
         """Allows user to upload a text file discussion into the GCS Discussions Bucket"""
@@ -158,3 +186,4 @@ class Backend:
             with open(file_uploaded, 'rb') as f:
                 blob.upload_from_file(f)
         pass
+

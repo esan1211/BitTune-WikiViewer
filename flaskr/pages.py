@@ -68,7 +68,7 @@ def make_endpoints(app):
 
         return render_template("login.html", msg=msg)  #Asis
 
-    @app.route("/logout")  #Asis
+    @app.route("/logout") #Asis
     def logout_page():
         """Allows user to logout after being logging in"""
         return render_template('main.html')
@@ -142,3 +142,22 @@ def make_endpoints(app):
         """Allows user to select a specific discussion posts to access"""
         discussion_posts = backend.get_discussion_post(stored)
         return discussion_posts
+
+    @app.route("/create_discussion",methods=['GET', 'POST']) #Enrique
+    def create_post():
+        """Allows user to create a discussion post"""
+        msg = ''
+
+        if request.method == 'POST' and 'userTitle' in request.form and 'userBody' in request.form:
+            title = request.form["userTitle"]
+            body = request.form["userBody"]
+            file_name = title+".txt"
+            backend.create_discussion(file_name,title,body)
+            backend.upload_discussion_post(file_name)
+            os.remove(file_name)
+            discussion_posts = backend.get_all_discussion_posts()
+            return render_template("discussion.html", discussion_list=discussion_posts)
+        else:
+            msg = "Please write in the specified fields"
+            print("NO")
+        return render_template("create_discussion.html")
