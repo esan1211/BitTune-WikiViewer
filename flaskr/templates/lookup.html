@@ -1,13 +1,13 @@
 {% extends "main.html" %}
 
 {% block page_name %}
-<h2 style="font-weight:100; font-size: 25px;">Museum Walls:</h2>
+<h2 style="font-weight:100; font-size: 25px;">Your Results:</h2>
 {% endblock %}
 
 
 {% block content %}
 <ul style="list-style-type:none;">
-    {% for name in name_lst %}
+    {% for name in valid_lst %}
     <li> <a style="color: midnightblue;" href = "{{url_for('grabUploaded', stored = name)}}">{{name}}</a> </li> <br>
     {% endfor %}
 </ul>

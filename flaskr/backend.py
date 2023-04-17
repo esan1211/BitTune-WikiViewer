@@ -137,17 +137,25 @@ class Backend:
 
         blobs = storage_client.list_blobs(bucket_name)
         
+        valid = []
+        print("hello")
         for blob in blobs:
-            blob = bucket.get_blob(blob.name)
-            count = 0
-            valid = []
-            with blob.open("rb") as f:
-                for line in f:
-                    for word in line.split():
-                        if word == keyword:
-                            count += 1
-                    if count == 5:
-                        break
-            valid.append(blob)
+            if (blob.name.endswith(".txt")):
+                blob = bucket.get_blob(blob.name)
+                count = 0
+                print('hello')
+                with blob.open("r") as f:
+                    lines = f.readlines()
+                    for line in lines:
+                        for word in line.split():
+                            if word.lower() == keyword.lower() and blob.name not in valid:
+                                valid.append(blob.name)
+                            else:
+                                count += 1
+                            if count == 100:
+                                break
+                        if count == 100:
+                            break
+        print(valid)
         return valid
                 

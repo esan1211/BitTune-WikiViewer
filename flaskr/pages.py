@@ -102,9 +102,15 @@ def make_endpoints(app):
         neededPage = backend.get_wiki_page(stored)
         return neededPage  #render_template(neededPage)
 
-    @app.route("/pages")
-    def search_results(): #Asis
-        keyword = request.form['keyword']
-        valid_lst = backend.search_keyword(keyword)
-        return render_template("pages.html", name_lst=valid_lst)
+    @app.route("/search")
+    def search_bar(): #Asis
+        return render_template("search.html")
+
+    @app.route("/search", methods=['GET', 'POST'])
+    def lookup(): #Asis
+        if request.method == 'POST' and 'keyword' in request.form:
+            keyword = request.form['keyword']
+            valid_lst = backend.search_keyword(keyword)
+        return render_template("lookup.html", valid_lst=valid_lst)
+
         
