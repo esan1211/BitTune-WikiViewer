@@ -128,3 +128,37 @@ class Backend:
                     return encoded_string
         print("Does not exist")
         pass
+
+    def search_keyword(self, keyword): #Asis
+        '''Searches through all of the valid articles in the Content bucket for the keyword that was input by the user
+
+        Returns:
+            A list of article names (valid) if the keyword is valid.
+        '''
+        bucket_name = "bt-wikiviewer-content"
+ 
+        storage_client = storage.Client()
+        bucket = storage_client.bucket(bucket_name)
+
+        blobs = storage_client.list_blobs(bucket_name)
+        
+        valid = []
+        for blob in blobs:
+            if (blob.name.endswith(".txt")):
+                blob = bucket.get_blob(blob.name)
+                count = 0
+                with blob.open("r") as f:
+                    lines = f.readlines()
+                    for line in lines:
+                        for word in line.split():
+                            if word.lower() == keyword.lower() and blob.name not in valid:
+                                valid.append(blob.name)
+                            else:
+                                count += 1
+                            if count == 100:
+                                break
+                        if count == 100:
+                            break
+        return valid
+                
+print('hello')
