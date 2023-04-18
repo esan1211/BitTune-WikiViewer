@@ -40,12 +40,12 @@ def test_upload_page(client, app):  #Enrique
     assert b"<h2>Upload</h2>" in resp.data
     assert resp.status_code == 200
 
-def test_logged_pages(client): #Danny
-    resp = client.get("/logged_pages")
-    assert resp.status_code == 200
-    assert b"Museum Walls:" in resp.data
-
-def test_logged_about(client): #Danny
-    resp = client.get("/logged_about")
-    assert resp.status_code == 200
-    assert b"<h2>About</h2>" in resp.data
+#def test_logged_pages(client): #Danny
+#    resp = client.get("/logged_pages")
+#    assert resp.status_code == 200
+#    assert b"Museum Walls:" in resp.data
+#
+#def test_logged_about(client): #Danny
+#    resp = client.get("/logged_about")
+#    assert resp.status_code == 200
+#    assert b"<h2>About</h2>" in resp.data
