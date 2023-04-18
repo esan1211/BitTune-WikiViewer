@@ -131,10 +131,65 @@ class Backend:
         print("Does not exist")
         pass
 
-    def user_exists(self, user):
+    def user_exists(self, user):  #Danny
         #checks if user exists within
-        pass
+        bucket_name = "bt-wikiviewer-users_passwords"
 
-    def get_user_pages(self):
-         #returns a list of the users pages
-         pass
+        storage_client = storage.Client()
+        bucket = storage_client.bucket(bucket_name)
+
+        blobs = storage_client.list_blobs(bucket_name)
+        for blob in blobs:
+            if user == blob.name:
+                return True
+        return False
+
+    def get_user_pages(self, user): #Danny
+        #returns a list of the users pages
+        user_list = None
+
+        bucket_name = "bt-wikiviewer-users_passwords"
+
+        storage_client = storage.Client()
+        bucket = storage_client.bucket(bucket_name)
+
+        blob = bucket.get_blob(user)
+
+        with blob.open("r") as f:
+            user_String = f.read()
+        print("hello", user_list)
+
+        user_list = user_String.split()
+
+        final_pages = user_list[1:]
+
+        return final_pages
+
+    def user_add_file(self, user, file): #Danny
+
+        previous_list = None
+
+        storage_client = storage.Client()
+        blobs = storage_client.list_blobs("bt-wikiviewer-content")
+
+        for blob in blobs:
+            if file == blob.name:
+                return False
+
+        bucket_name = "bt-wikiviewer-users_passwords"
+        storage_client = storage.Client()
+        blobs = storage_client.list_blobs(bucket_name)
+
+        for blob in blobs:
+            if user == blob.name:
+                with blob.open("r") as f:
+                    previous_list = f.readlines()
+                    
+                previous_list.append(file)
+
+                data = ' '.join(previous_list)
+
+                with blob.open('w') as f:
+                    f.write(data)
+
+        return True

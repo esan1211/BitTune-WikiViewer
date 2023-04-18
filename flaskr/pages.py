@@ -95,6 +95,10 @@ def make_endpoints(app):
 
                 basedir = os.path.abspath(os.path.dirname(__file__))
                 filename = secure_filename(f.filename) #add to list
+
+                if not backend.user_add_file(current_user.username, filename):
+                    return render_template("page_exists.html", display_name=filename, name=current_user.username)
+
                 basedir = os.path.dirname(basedir)
                 f.save(os.path.join(os.path.join(basedir), filename))
                 backend.upload(filename)
@@ -134,20 +138,47 @@ def make_endpoints(app):
         neededPage = backend.get_wiki_page(stored)
         return neededPage  #render_template(neededPage)
 
-    @app.route("/user_page", methods = ['GET', 'POST'])
+    #--
+    @app.route("/user_page", methods = ['GET', 'POST']) #Danny
     def grabUser():
         #check request
         if request.method == 'POST' and 'user' in request.form:
 
         #set variables
-            user = request.form['username']
+            user = request.form['user']
 
         #check if user exists
         if backend.user_exists(user):
         #  if they do
         #   get user page
-            user_page_lst = backend.get_user_pages()        
+            user_page_lst = backend.get_user_pages(user)        
         #   return user page
+            return render_template("user_page.html", upl=user_page_lst, display_name=user)
         #  else
+        else:
         #   return dont exist page
-        pass
+            return render_template("no_matches.html", display_name=user)
+    #--
+
+
+    #--
+    @app.route("/logged_user_page", methods = ['GET', 'POST']) #Danny
+    def loggedGrabUser():
+        #check request
+        if request.method == 'POST' and 'user' in request.form:
+
+        #set variables
+            user = request.form['user']
+
+        #check if user exists
+        if backend.user_exists(user):
+        #  if they do
+        #   get user page
+            user_page_lst = backend.get_user_pages(user)        
+        #   return user page
+            return render_template("logged_user_page.html", upl=user_page_lst, display_name=user, name=current_user.username)
+        #  else
+        else:
+        #   return dont exist page
+            return render_template("logged_no_matches.html", display_name=user, name=current_user.username)
+    #--

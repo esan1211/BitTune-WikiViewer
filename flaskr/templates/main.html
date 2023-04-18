@@ -55,6 +55,15 @@
     </div>
     {% endblock %}
 
+    {% block search %}
+    <form action="/user_page" method = 'post'>
+    
+        <input id='user' name='user' type='text' />
+    
+        <input type='submit' value='search'>
+    </form>
+    {% endblock %}
+
     <h1>Wiki Music Museum</h1>
 
     {% block page_name%}{% endblock %}
