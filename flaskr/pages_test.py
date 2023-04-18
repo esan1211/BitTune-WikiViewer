@@ -39,3 +39,13 @@ def test_upload_page(client, app):  #Enrique
     resp = client.post("/upload", data={"myfile": "test.txt"})
     assert b"<h2>Upload</h2>" in resp.data
     assert resp.status_code == 200
+
+def test_discussion_page(client,app):  #Enrique
+    resp = client.post("/discussion")
+    assert b"<h2>Discussion Posts</h2>" in resp.data
+    assert resp.status_code == 200
+
+def test_create_discussion_page(client,app):  #Enrique
+    resp = client.post("/create_discussion")
+    assert b"<h2>Create Discussion Post</h2>" in resp.data
+    assert resp.status_code == 200

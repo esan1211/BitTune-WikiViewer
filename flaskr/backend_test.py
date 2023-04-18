@@ -75,22 +75,32 @@ def test_get_all_discussion_posts(mock_client):
         result = backend.get_all_discussion_posts()
     assert result == [mock_blob.name]
 
-"""
 @patch('google.cloud.storage.Client') #Enrique
 def test_get_discussion_posts(mock_client):
     backend = Backend()
-    mock_data = b"Test"
-    mock_bucket_name = "test"
+    blob_name = 'discussion.txt'
+    mock_file = MagicMock()
     mock_blob = MagicMock()
-    mock_blob.name = "discussion.txt"
-    mock_bucket = MagicMock()
-    mock_client.return_value.get_bucket.return_value = mock_bucket
-    mock_bucket.name = mock_bucket_name
-    mock_bucket.list_blobs.return_value = [mock_blob]
-    mock_client.return_value = mock_bucket
-    with patch("builtins.open",mock_open(read_data=mock_data)) as mock_open_func:
-        print(mock_blob.name)
-        result = backend.get_discussion_post(mock_blob)
-        print(result.name)
-    assert result == mock_blob.name
-    """
+    mock_client = MagicMock()
+    mock_client.get_blob.return_value = mock_blob
+    with patch.object(storage, 'Client', return_value=mock_client):
+        result = backend.get_discussion_post(blob_name)
+        test = backend.get_discussion_post(blob_name)
+        assert result.name == test.name
+
+@pytest.fixture #Enrique
+def my_title():
+    return "Hello"
+
+@pytest.fixture #Enrique
+def my_context():
+    return "Hi"
+
+@patch("builtins.open") #Enrique
+def test_create_discussion(file,my_title,my_context):
+    backend = Backend()
+    file_path = "mock_path"
+    title = "Test"
+    context = "Hello"
+    assert None == backend.create_discussion(file_path,title,context)
+    
