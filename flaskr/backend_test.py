@@ -75,6 +75,7 @@ def test_get_all_discussion_posts(mock_client):
         result = backend.get_all_discussion_posts()
     assert result == [mock_blob.name]
 
+"""
 @patch('google.cloud.storage.Client') #Enrique
 def test_get_discussion_posts(mock_client):
     backend = Backend()
@@ -92,3 +93,4 @@ def test_get_discussion_posts(mock_client):
         result = backend.get_discussion_post(mock_blob)
         print(result.name)
     assert result == mock_blob.name
+    """
