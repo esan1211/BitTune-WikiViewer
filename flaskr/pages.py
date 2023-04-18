@@ -5,7 +5,6 @@ import base64
 import io
 import os
 
-
 def make_endpoints(app):
     """Sets up routing"""
     backend = Backend()
@@ -104,13 +103,22 @@ def make_endpoints(app):
 
     @app.route("/search")
     def search_bar(): #Asis
+        '''Loads the search bar onto the wiki once Search is clicked in the Nav Bar'''
         return render_template("search.html")
 
     @app.route("/search", methods=['GET', 'POST'])
     def lookup(): #Asis
+        '''Takes in a keyword from the user and loads a list of unique articles onto the wiki once a valid keyword is input into the search bar'''
         if request.method == 'POST' and 'keyword' in request.form:
             keyword = request.form['keyword']
-            valid_lst = backend.search_keyword(keyword)
-        return render_template("lookup.html", valid_lst=valid_lst)
+            if backend.search_keyword(keyword) != False:
+                valid_lst = backend.search_keyword(keyword)
+                if valid_lst != []:
+                    msg = 'Your Results:'
+                else:
+                    msg = 'Your topic has no results, you can upload an article on your topic by clicking Upload!'
+        return render_template("lookup.html", valid_lst=valid_lst, msg=msg)
+
+#<h2 style="font-weight:100; font-size: 25px;">Your Results:</h2>
 
         

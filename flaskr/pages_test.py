@@ -1,5 +1,5 @@
 from flaskr import create_app
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 from pathlib import Path
 import pytest
 
@@ -39,3 +39,9 @@ def test_upload_page(client, app):  #Enrique
     resp = client.post("/upload", data={"myfile": "test.txt"})
     assert b"<h2>Upload</h2>" in resp.data
     assert resp.status_code == 200
+
+def test_search_bar_page(client): #Asis
+    resp = client.get('/search')
+    assert resp.status_code == 200
+    assert b'<h1 style="font-size: 40px;"> Search</h1>' in resp.data
+

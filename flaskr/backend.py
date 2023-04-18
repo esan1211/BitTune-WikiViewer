@@ -130,6 +130,12 @@ class Backend:
         pass
 
     def search_keyword(self, keyword): #Asis
+        '''Searches through all of the valid articles in the Content bucket for the keyword that was input by the user
+
+        Returns:
+            A list of article names (valid) if the keyword is valid.
+            False if keyword is not valid.
+        '''
         bucket_name = "bt-wikiviewer-content"
  
         storage_client = storage.Client()
@@ -138,12 +144,12 @@ class Backend:
         blobs = storage_client.list_blobs(bucket_name)
         
         valid = []
-        print("hello")
+        #print("hello")
         for blob in blobs:
             if (blob.name.endswith(".txt")):
                 blob = bucket.get_blob(blob.name)
                 count = 0
-                print('hello')
+                #print('hello')
                 with blob.open("r") as f:
                     lines = f.readlines()
                     for line in lines:
@@ -156,6 +162,6 @@ class Backend:
                                 break
                         if count == 100:
                             break
-        print(valid)
+        #print(valid)
         return valid
                 

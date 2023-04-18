@@ -3,7 +3,6 @@ from unittest.mock import MagicMock, patch, mock_open
 from google.cloud import storage
 import pytest
 
-
 # TODO(Project 1): Write tests for Backend methods.
 @patch('google.cloud.storage.Client')
 def test_upload(mock_client):  #Enrique
@@ -50,3 +49,20 @@ def test_get_image_fail(mock_client):  #Enrique
         result = backend.get_image(" ")
         assert result == mock_encoding
 
+'''
+@patch('google.cloud.storage.Client')
+def test_search_keyword(mock_client): 
+    backend = Backend()
+    mock_data = b""
+    mock_file = MagicMock()
+    mock_bucket = MagicMock()
+    #mock_bucket_name = "Test"
+    mock_blob = MagicMock()
+    mock_blob.name = "test.txt"
+    mock_client.return_value.get_bucket.return_value = mock_bucket
+    mock_file.endswith.return_value = "txt"
+    mock_bucket.list_blobs.return_value = [mock_blob]
+    mock_client.return_value = mock_bucket
+    with patch('builtins.open') as f:
+        assert backend.search_keyword('Test') == [mock_blob.name]
+'''
