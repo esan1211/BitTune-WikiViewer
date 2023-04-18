@@ -40,8 +40,9 @@ def test_upload_page(client, app):  #Enrique
     assert b"<h2>Upload</h2>" in resp.data
     assert resp.status_code == 200
 
-def test_search_bar_page(client): #Asis
+def test_search_bar_page(client):
     resp = client.get('/search')
     assert resp.status_code == 200
     assert b'<h1 style="font-size: 40px;"> Search</h1>' in resp.data
 
+print('hello')
