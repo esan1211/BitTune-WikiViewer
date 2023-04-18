@@ -146,7 +146,6 @@ def make_endpoints(app):
     @app.route("/create_discussion",methods=['GET', 'POST']) #Enrique
     def create_post():
         """Allows user to create a discussion post"""
-        msg = ''
 
         if request.method == 'POST' and 'userTitle' in request.form and 'userBody' in request.form:
             title = request.form["userTitle"]
@@ -157,7 +156,4 @@ def make_endpoints(app):
             os.remove(file_name)
             discussion_posts = backend.get_all_discussion_posts()
             return render_template("discussion.html", discussion_list=discussion_posts)
-        else:
-            msg = "Please write in the specified fields"
-            print("NO")
         return render_template("create_discussion.html")
