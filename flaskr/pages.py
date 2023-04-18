@@ -156,4 +156,5 @@ def make_endpoints(app):
             os.remove(file_name)
             discussion_posts = backend.get_all_discussion_posts()
             return render_template("discussion.html",discussion_list=discussion_posts)
+            
         return render_template("create_discussion.html")
