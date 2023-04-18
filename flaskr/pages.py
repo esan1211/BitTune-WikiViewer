@@ -119,6 +119,5 @@ def make_endpoints(app):
                     msg = 'Your topic has no results, you can upload an article on your topic by clicking Upload!'
         return render_template("lookup.html", valid_lst=valid_lst, msg=msg)
 
-#<h2 style="font-weight:100; font-size: 25px;">Your Results:</h2>
-
+#print(hello)
         
