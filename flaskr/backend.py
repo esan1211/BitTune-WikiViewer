@@ -148,6 +148,7 @@ class Backend:
         return discussion_list
     
     def create_discussion(self,file,title,context): #Enrique
+        """Creates layout of text file with user inputs"""
         with open(file, 'w') as f:
             f.write("<!DOCTYPE html>\n")
             f.write("<html>\n\n")
