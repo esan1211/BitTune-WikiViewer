@@ -1,4 +1,5 @@
 image: python:3
+<<<<<<< HEAD
 #lint:
 #  stage: test
 #  script:
@@ -6,6 +7,12 @@ image: python:3
 #    - yapf --style google --recursive --diff .
 #  only:
 #    - merge_requests
+=======
+<<<<<<< HEAD
+=======
+#Removed lint because of bug error
+>>>>>>> enriquebranch
+>>>>>>> ab5dcbb202b0fde44a6c2732f3d3494816325e7c
 
 unittest:
  stage: test

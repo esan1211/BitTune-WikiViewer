@@ -6,7 +6,6 @@ import base64
 import io
 import os
 
-
 def make_endpoints(app):
     """Sets up routing"""
     backend = Backend()
@@ -182,3 +181,73 @@ def make_endpoints(app):
         #   return dont exist page
             return render_template("logged_no_matches.html", display_name=user, name=current_user.username)
     #--
+    @app.route("/search")
+    def search_bar(): #Asis
+        '''Loads the search bar onto the wiki once Search is clicked in the Nav Bar'''
+        return render_template("search.html")
+
+    @app.route("/search", methods=['GET', 'POST'])
+    def lookup(): #Asis
+        '''Takes in a keyword from the user and loads a list of unique articles onto the wiki once a valid keyword is input into the search bar'''
+        if request.method == 'POST' and 'keyword' in request.form:
+            keyword = request.form['keyword']
+            if backend.search_keyword(keyword) != False:
+                valid_lst = backend.search_keyword(keyword)
+                if valid_lst != []:
+                    msg = 'Your Results:'
+                else:
+                    msg = 'Your topic has no results, you can upload an article on your topic by clicking Upload!'
+        return render_template("lookup.html", valid_lst=valid_lst, msg=msg)
+    
+    @app.route("/discussion") #Enrique
+    def discussion_posts():
+        """Shows user all available discussion posts"""
+        discussion_posts = backend.get_all_discussion_posts()
+        return render_template("discussion.html", discussion_list=discussion_posts)
+
+    @app.route("/discussion", methods=['GET', 'POST']) #Enrique
+    def discussion():
+        """Allows user to upload discussion post"""
+        if request.method == "POST":
+
+            if request.files:
+                f = request.files["myfile"]
+
+                if f.filename == '':
+                    print("File cannot be empty")
+                    return redirect(request.url)
+
+                basedir = os.path.abspath(os.path.dirname(__file__))
+                filename = secure_filename(f.filename)
+                basedir = os.path.dirname(basedir)
+                f.save(os.path.join(os.path.join(basedir), filename))
+                backend.upload_discussion_post(filename)
+                os.remove(f.filename)
+                discussion_posts = backend.get_all_discussion_posts()
+                return render_template("discussion.html", discussion_list=discussion_posts)
+
+        discussion_posts = backend.get_all_discussion_posts()
+        return render_template("discussion.html", discussion_list=discussion_posts)
+    
+
+    @app.route("/discussion/<stored>") #Enrique
+    def get_discussion_post(stored):
+        """Allows user to select a specific discussion posts to access"""
+        discussion_posts = backend.get_discussion_post(stored)
+        return discussion_posts
+
+    @app.route("/create_discussion",methods=['GET', 'POST']) #Enrique
+    def create_post():
+        """Allows user to create a discussion post"""
+
+        if request.method == 'POST' and 'userTitle' in request.form and 'userBody' in request.form:
+            title = request.form["userTitle"]
+            body = request.form["userBody"]
+            file_name = title+".txt"
+            backend.create_discussion(file_name,title,body)
+            backend.upload_discussion_post(file_name)
+            os.remove(file_name)
+            discussion_posts = backend.get_all_discussion_posts()
+            return render_template("discussion.html",discussion_list=discussion_posts)
+            
+        return render_template("create_discussion.html")

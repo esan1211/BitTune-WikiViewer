@@ -34,6 +34,7 @@ class User:
         self.file_lst = []
 
 
+
 class Backend:
     """Creates a Class that describes the functionality of the wikiviewer
 
@@ -129,6 +130,96 @@ class Backend:
                     encoded_string = base64.b64encode(f.read())
                     return encoded_string
         print("Does not exist")
+        pass
+
+    def search_keyword(self, keyword): #Asis
+        '''Searches through all of the valid articles in the Content bucket for the keyword that was input by the user
+
+        Returns:
+            A list of article names (valid) if the keyword is valid.
+        '''
+        bucket_name = "bt-wikiviewer-content"
+ 
+        storage_client = storage.Client()
+        bucket = storage_client.bucket(bucket_name)
+
+        blobs = storage_client.list_blobs(bucket_name)
+        
+        valid = []
+        for blob in blobs:
+            if (blob.name.endswith(".txt")):
+                blob = bucket.get_blob(blob.name)
+                count = 0
+                with blob.open("r") as f:
+                    lines = f.readlines()
+                    for line in lines:
+                        for word in line.split():
+                            if word.lower() == keyword.lower() and blob.name not in valid:
+                                valid.append(blob.name)
+                            else:
+                                count += 1
+                            if count == 100:
+                                break
+                        if count == 100:
+                            break
+        return valid
+                
+    def get_discussion_post(self,post): #Enrique
+        """Gets a specific discussion posts page"""
+        storage_client = storage.Client()
+        bucket = storage_client.bucket("bt-wikiviewer-discussions")
+        blob = bucket.get_blob(post)
+        with blob.open() as f:
+            return f.read()
+
+    def get_all_discussion_posts(self): #Enrique
+        """Shows user all available discussion posts"""
+        storage_client = storage.Client()
+        blobs = storage_client.list_blobs("bt-wikiviewer-discussions")
+        discussion_list = []
+        for blob in blobs:
+            if (blob.name.endswith(".txt")):
+                discussion_list.append(blob.name)
+        return discussion_list
+    
+    def create_discussion(self,file,title,context): #Enrique
+        """Creates layout of text file with user inputs"""
+        with open(file, 'w') as f:
+            f.write("<!DOCTYPE html>\n")
+            f.write("<html>\n\n")
+            f.write("<head>\n")
+            f.write("   <head>\n")
+            f.write("       <title>Wiki Music Museum</title>\n\n")
+            f.write("       <div align = 'center'>\n")
+            f.write("           <h1>")
+            f.write(title)
+            f.write("</h1>\n")
+            f.write("       </div>\n\n\n")
+            f.write("   <head>\n")
+            f.write("</head>\n\n")
+            f.write("<body>\n\n")
+            f.write("   <div align = 'center'>\n")
+            f.write("       <h3>")
+            f.write(context)
+            f.write("<h3>\n")
+            f.write("</body>\n\n")
+            f.write("</html>")
+            f.write("<style>\n")
+            f.write("   body {\n")
+            f.write("       background-color: #5FA8B0;")
+            f.write("   }")
+            f.write("<style>\n")
+        pass
+
+    def upload_discussion_post(self, file_uploaded): #Enrique
+        """Allows user to upload a text file discussion into the GCS Discussions Bucket"""
+        storage_client = storage.Client()
+        bucket = storage_client.bucket("bt-wikiviewer-discussions")
+        if (file_uploaded.endswith(".txt")):
+            filename = "%s%s" % ('', file_uploaded)
+            blob = bucket.blob(filename)
+            with open(file_uploaded, 'rb') as f:
+                blob.upload_from_file(f)
         pass
 
     def user_exists(self, user):  #Danny
