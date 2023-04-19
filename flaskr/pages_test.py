@@ -34,7 +34,19 @@ def test_upload_page(client, app):  #Enrique
     assert b"<h2>Upload</h2>" in resp.data
     assert resp.status_code == 200
 
+<<<<<<< HEAD
 def test_search_bar_page(client):
     resp = client.get('/search')
     assert resp.status_code == 200
     assert b'<h1 style="font-size: 40px;"> Search</h1>' in resp.data
+=======
+def test_discussion_page(client,app):  #Enrique
+    resp = client.post("/discussion")
+    assert b"<h2>Discussion Posts</h2>" in resp.data
+    assert resp.status_code == 200
+
+def test_create_discussion_page(client,app):  #Enrique
+    resp = client.post("/create_discussion")
+    assert b"<h2>Create Discussion Post</h2>" in resp.data
+    assert resp.status_code == 200
+>>>>>>> enriquebranch

@@ -1,4 +1,8 @@
 image: python:3
+<<<<<<< HEAD
+=======
+#Removed lint because of bug error
+>>>>>>> enriquebranch
 
 unittest:
  stage: test

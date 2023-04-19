@@ -24,7 +24,7 @@ def make_endpoints(app):
         page_name_list = backend.get_all_page_names()
         return render_template("pages.html", name_lst=page_name_list)
 
-    @app.route("/about")  #Enrique
+    @app.route("/about") #Enrique
     def about():
         """Sets up image rendering for the about page"""
         img1 = backend.get_image("asis.jpeg")
@@ -67,12 +67,12 @@ def make_endpoints(app):
 
         return render_template("login.html", msg=msg)  #Asis
 
-    @app.route("/logout")  #Asis
+    @app.route("/logout") #Asis
     def logout_page():
         """Allows user to logout after being logging in"""
         return render_template('main.html')
 
-    @app.route("/upload", methods=['GET', 'POST'])  #Enrique
+    @app.route("/upload", methods=['GET', 'POST']) #Enrique
     def uploadPage():
         """Once logged in, allows user to upload their own html files"""
         #app.config['UPLOAD_FILE'] = "/home/username/project/"
@@ -119,5 +119,61 @@ def make_endpoints(app):
                     msg = 'Your topic has no results, you can upload an article on your topic by clicking Upload!'
         return render_template("lookup.html", valid_lst=valid_lst, msg=msg)
 
-#print(hello)
         
+    
+    @app.route("/logged_in")
+    def logged_in():
+        return render_template("logged_in.html")
+    
+    @app.route("/discussion") #Enrique
+    def discussion_posts():
+        """Shows user all available discussion posts"""
+        discussion_posts = backend.get_all_discussion_posts()
+        return render_template("discussion.html", discussion_list=discussion_posts)
+
+    @app.route("/discussion", methods=['GET', 'POST']) #Enrique
+    def discussion():
+        """Allows user to upload discussion post"""
+        if request.method == "POST":
+
+            if request.files:
+                f = request.files["myfile"]
+
+                if f.filename == '':
+                    print("File cannot be empty")
+                    return redirect(request.url)
+
+                basedir = os.path.abspath(os.path.dirname(__file__))
+                filename = secure_filename(f.filename)
+                basedir = os.path.dirname(basedir)
+                f.save(os.path.join(os.path.join(basedir), filename))
+                backend.upload_discussion_post(filename)
+                os.remove(f.filename)
+                discussion_posts = backend.get_all_discussion_posts()
+                return render_template("discussion.html", discussion_list=discussion_posts)
+
+        discussion_posts = backend.get_all_discussion_posts()
+        return render_template("discussion.html", discussion_list=discussion_posts)
+    
+
+    @app.route("/discussion/<stored>") #Enrique
+    def get_discussion_post(stored):
+        """Allows user to select a specific discussion posts to access"""
+        discussion_posts = backend.get_discussion_post(stored)
+        return discussion_posts
+
+    @app.route("/create_discussion",methods=['GET', 'POST']) #Enrique
+    def create_post():
+        """Allows user to create a discussion post"""
+
+        if request.method == 'POST' and 'userTitle' in request.form and 'userBody' in request.form:
+            title = request.form["userTitle"]
+            body = request.form["userBody"]
+            file_name = title+".txt"
+            backend.create_discussion(file_name,title,body)
+            backend.upload_discussion_post(file_name)
+            os.remove(file_name)
+            discussion_posts = backend.get_all_discussion_posts()
+            return render_template("discussion.html",discussion_list=discussion_posts)
+            
+        return render_template("create_discussion.html")
